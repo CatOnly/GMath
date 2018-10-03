@@ -1,15 +1,15 @@
-#ifndef SFL_VEC3_H
-#define SFL_VEC3_H
+#ifndef GM_VEC3_H
+#define GM_VEC3_H
 
-#include <cassert>
+#include "vec2.hpp"
 
 #define V3_OPERATOR_BASE(symbol) \
-SFLVec3 operator symbol (const SFLVec3 &a){\
-    return SFLVec3(x symbol a.x, y symbol a.y, z symbol a.z);\
+GMVec3 operator symbol (const GMVec3 &a){\
+    return GMVec3(x symbol a.x, y symbol a.y, z symbol a.z);\
 }
 
 #define V3_OPERATOR_SELF(symbol) \
-SFLVec3& operator symbol (const SFLVec3 &a){\
+GMVec3& operator symbol (const GMVec3 &a){\
     x symbol a.x;\
     y symbol a.y;\
     z symbol a.z;\
@@ -18,8 +18,8 @@ SFLVec3& operator symbol (const SFLVec3 &a){\
 }
 
 #define V3_OPERATOR_SELF_LAST(symbol) \
-SFLVec3 operator symbol (int){\
-    SFLVec3 tmp(*this);\
+GMVec3 operator symbol (int){\
+    GMVec3 tmp(*this);\
     symbol x;\
     symbol y;\
     symbol z;\
@@ -27,7 +27,7 @@ SFLVec3 operator symbol (int){\
     return tmp;\
 }
 #define V3_OPERATOR_SELF_FIRST(symbol) \
-SFLVec3& operator symbol (){\
+GMVec3& operator symbol (){\
     symbol x;\
     symbol y;\
     symbol z;\
@@ -35,25 +35,28 @@ SFLVec3& operator symbol (){\
     return *this;\
 }
 
-namespace SFL {
+#define FLOAT_OPERATOR_V3(symbol) \
+template<typename T> \
+sfl_vec3<T> operator symbol (const T &value, const sfl_vec3<T> &vector){\
+    return sfl_vec3<T>(static_cast<T>(value) symbol vector.x, static_cast<T>(value) symbol vector.y, static_cast<T>(value) symbol vector.z);\
+}
 
-    template <typename T> class sfl_vec3
+namespace gm {
+
+    template <typename T> class gm_vec3
     {
     public:
         union { T x, r, s;};
         union { T y, g, t;};
         union { T z, b, p;};
 
-        typedef sfl_vec3<T> SFLVec3;
+        gm_vec3(T x, T y, T z):x(x),y(y),z(z){}
+        gm_vec3(T x = static_cast<T>(0)):gm_vec3(x,x,x){}
+        gm_vec3(const gm_vec3<T> &vec):gm_vec3(vec.x, vec.y, vec.z){}
 
-        sfl_vec3(T x, T y, T z):x(static_cast<T>(x)),y(static_cast<T>(y)),z(static_cast<T>(z)){}
-        sfl_vec3(T x = 0.0f):sfl_vec3(static_cast<T>(x), static_cast<T>(x), static_cast<T>(x)){}
-        sfl_vec3(const sfl_vec3<T> &vec):sfl_vec3(vec.x, vec.y, vec.z){}
+        typedef gm_vec3<T> GMVec3;
 
-        T & operator[](int i) const {
-            assert(i >= 0 && i < 3);
-            return (&x)[i];
-        }
+        VEC_OPERATOR_INDEX(3)
 
         V3_OPERATOR_BASE(+)
         V3_OPERATOR_BASE(-)
@@ -72,4 +75,4 @@ namespace SFL {
     };
 }
 
-#endif // SFL_VEC3_H
+#endif // GM_VEC3_H

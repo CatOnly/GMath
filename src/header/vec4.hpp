@@ -1,15 +1,15 @@
-#ifndef SFL_VEC4_H
-#define SFL_VEC4_H
+#ifndef GM_VEC4_H
+#define GM_VEC4_H
 
 #include "vec3.hpp"
 
 #define V4_OPERATOR_BASE(symbol) \
-SFLVec4 operator symbol (const SFLVec4 &a){\
-    return SFLVec4(x symbol a.x, y symbol a.y, z symbol a.z, w symbol a.w);\
+GMVec4 operator symbol (const GMVec4 &a){\
+    return GMVec4(x symbol a.x, y symbol a.y, z symbol a.z, w symbol a.w);\
 }
 
 #define V4_OPERATOR_SELF(symbol) \
-SFLVec4& operator symbol (const SFLVec4 &a){\
+GMVec4& operator symbol (const GMVec4 &a){\
     x symbol a.x;\
     y symbol a.y;\
     z symbol a.z;\
@@ -19,8 +19,8 @@ SFLVec4& operator symbol (const SFLVec4 &a){\
 }
 
 #define V4_OPERATOR_SELF_LAST(symbol) \
-SFLVec4 operator symbol (int){\
-    SFLVec4 tmp(*this);\
+GMVec4 operator symbol (int){\
+    GMVec4 tmp(*this);\
     symbol x;\
     symbol y;\
     symbol z;\
@@ -29,7 +29,7 @@ SFLVec4 operator symbol (int){\
     return tmp;\
 }
 #define V4_OPERATOR_SELF_FIRST(symbol) \
-SFLVec4& operator symbol (){\
+GMVec4& operator symbol (){\
     symbol x;\
     symbol y;\
     symbol z;\
@@ -38,9 +38,9 @@ SFLVec4& operator symbol (){\
     return *this;\
 }
 
-namespace SFL {
+namespace gm {
 
-    template <typename T> class sfl_vec4
+    template <typename T> class gm_vec4
     {
     public:
         union { T x, r, s; };
@@ -48,18 +48,15 @@ namespace SFL {
         union { T z, b, p; };
         union { T w, a, q; };
 
-        typedef sfl_vec4<T> SFLVec4;
+        gm_vec4(T x, T y, T z, T w):x(x),y(y),z(z),w(w){}
+        gm_vec4(T x = static_cast<T>(0)):gm_vec4(x,x,x,x){}
+        gm_vec4(const gm_vec4<T> &vec):gm_vec4(vec.x, vec.y, vec.z, vec.w){}
 
-        sfl_vec4(T x, T y, T z, T w):x(static_cast<T>(x)),y(static_cast<T>(y)),z(static_cast<T>(z)),w(static_cast<T>(w)){}
-        sfl_vec4(T x = 0.0f):sfl_vec4(static_cast<T>(x),static_cast<T>(x),static_cast<T>(x),static_cast<T>(x)){}
-        sfl_vec4(const sfl_vec4<T> &vec):sfl_vec4(vec.x, vec.y, vec.z, vec.w){}
+        explicit gm_vec4(const gm_vec3<T> &vec):gm_vec4(vec.x, vec.y, vec.z, 0.0f){}
 
-        explicit sfl_vec4(const sfl_vec3<T> &vec):sfl_vec4(vec.x, vec.y, vec.z, 0.0f){}
+        typedef gm_vec4<T> GMVec4;
 
-        T & operator[](int i) const {
-            assert(i >= 0 && i < 4);
-            return (&x)[i];
-        }
+        VEC_OPERATOR_INDEX(4)
 
         V4_OPERATOR_BASE(+)
         V4_OPERATOR_BASE(-)
@@ -78,4 +75,4 @@ namespace SFL {
     };
 }
 
-#endif // SFL_VEC4_H
+#endif // GM_VEC4_H

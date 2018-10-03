@@ -22,10 +22,40 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+INCLUDEPATH += $$PWD/../src
 
 SOURCES += \
         main.cpp \
-        MainWindow.cpp
+        MainWindow.cpp \
+    common/SFLModelAbstract.cpp \
+    common/SFLSelectorLayout.cpp \
+    common/SFLVec1Editor.cpp \
+    common/SFLVec3Editor.cpp \
+    views/SFLViewControl.cpp \
+    views/SFLViewRender.cpp \
+    views/SFLViewNoLight.cpp
 
 HEADERS += \
-        MainWindow.h
+        MainWindow.h \
+    common/SFLDefine.h \
+    common/SFLModelAbstract.h \
+    common/SFLSelectorLayout.h \
+    common/SFLToolBtn.h \
+    common/SFLVec1Editor.h \
+    common/SFLVec3Editor.h \
+    common/SFLViewAbstract.h \
+    views/SFLViewControl.h \
+    views/SFLViewRender.h \
+    views/SFLViewNoLight.h \
+    SFLCameraVirtual.h \
+    SFLModelNoLight.h \
+    ../src/header/debug.hpp \
+    ../src/header/geometric.hpp \
+    ../src/header/mat.hpp \
+    ../src/header/mat3x3.hpp \
+    ../src/header/mat4x4.hpp \
+    ../src/header/transform.hpp \
+    ../src/header/vec2.hpp \
+    ../src/header/vec3.hpp \
+    ../src/header/vec4.hpp \
+    ../src/GMath.hpp

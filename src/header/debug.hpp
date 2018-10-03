@@ -1,16 +1,17 @@
 #ifndef DEBUG_H
 #define DEBUG_H
 
-#include "vec3.hpp"
 #include "vec4.hpp"
 #include "mat3x3.hpp"
 #include "mat4x4.hpp"
 
-namespace SFL {
+#include <iostream>
+
+namespace gm {
 
     // -- print vector -----------------------
     template<typename T>
-    void print(const sfl_vec3<T> &vec){
+    void print(const gm_vec3<T> &vec){
         using namespace std;
         cout << "Vector3:  " << showpoint
              << vec.x << " "
@@ -20,7 +21,7 @@ namespace SFL {
     }
 
     template<typename T>
-    void print(const sfl_vec4<T> &vec){
+    void print(const gm_vec4<T> &vec){
         using namespace std;
         cout << "Vector4:  " << showpoint
              << vec.x << " "
@@ -32,7 +33,7 @@ namespace SFL {
 
     // -- print matrix -----------------------
     template<typename T>
-    void print(const sfl_mat3<T> &matrix){
+    void print(const gm_mat3<T> &matrix){
         using namespace std;
         cout << "Matrix3: " << endl;
         cout.precision(3);
@@ -46,7 +47,7 @@ namespace SFL {
     }
 
     template<typename T>
-    void print(const sfl_mat4<T> &matrix){
+    void print(const gm_mat4<T> &matrix){
         using namespace std;
         cout << "Matrix4: " << endl;
         cout.precision(3);
