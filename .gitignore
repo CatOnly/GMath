@@ -1,5 +1,6 @@
 # Prerequisites
 *.d
+.DS_Store
 
 # Compiled Object files
 *.slo
@@ -19,6 +20,7 @@
 # Fortran module files
 *.mod
 *.smod
+*.user
 
 # Compiled Static libraries
 *.lai
@@ -30,3 +32,4 @@
 *.exe
 *.out
 *.app
+/example/build
