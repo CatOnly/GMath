@@ -20,7 +20,7 @@ public:
     virtual void initializeOpenGL() = 0;
 
     void initializeOpenGLFunctions();
-//    void setDelegate(SFLCameraVirtual * delegate);
+    void setDelegate(SFLCameraVirtual * delegate);
 
     SFLViewAbstract *view();
     SFLToolBtn *toolBtn();
@@ -30,6 +30,6 @@ protected:
     bool _hasInitialized = false;
     SFLViewAbstract *_view = nullptr;
     SFLToolBtn *_btn = nullptr;
-//    SFLCameraVirtual *_delegateCamaera = nullptr;
+    SFLCameraVirtual *_delegateCamaera = nullptr;
 };
 #endif // SFLMODELABSTRACT_H

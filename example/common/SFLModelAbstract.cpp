@@ -29,10 +29,10 @@ void SFLModelAbstract::initializeOpenGLFunctions()
     _hasInitialized = true;
 }
 
-//void SFLModelAbstract::setDelegate(SFLCameraVirtual *delegate)
-//{
-//    _delegateCamaera = delegate;
-//}
+void SFLModelAbstract::setDelegate(SFLCameraVirtual *delegate)
+{
+    _delegateCamaera = delegate;
+}
 
 SFLViewAbstract *SFLModelAbstract::view()
 {

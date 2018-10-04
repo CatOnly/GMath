@@ -1,4 +1,5 @@
 #include "MainWindow.h"
+#include "common/SFLModelAbstract.h"
 #include "SFLModelNoLight.h"
 #include "views/SFLViewRender.h"
 #include "views/SFLViewControl.h"
@@ -15,9 +16,6 @@ MainWindow::MainWindow(QWidget *parent)
     _controlView = new SFLViewControl(this);
 
     _model->setDelegate(_renderView->cameraVirtual());
-    _controlView->setDelegate(_model);
-    _renderView->setDelegate(_model);
-    SFLModelAbstract::currentUseWidget = _model;
 
     setupUI();
 }
@@ -44,6 +42,15 @@ void MainWindow::setupUI()
 
 void MainWindow::resetCamera()
 {
-//    _renderView->cameraVirtual()->resetData();
+    _renderView->cameraVirtual()->resetData();
     _renderView->update();
+}
+
+void MainWindow::show()
+{
+    QMainWindow::show();
+    _controlView->setDelegate(_model);
+    _renderView->setDelegate(_model);
+
+    SFLModelAbstract::currentUseWidget = _model;
 }

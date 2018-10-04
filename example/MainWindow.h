@@ -14,6 +14,8 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    void show();
+
 private:
     SFLModelNoLight *_model;
     SFLViewRender  *_renderView;

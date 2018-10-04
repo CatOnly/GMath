@@ -32,7 +32,7 @@ public:
     float currentYaw;
     float currentPich;
 
-    SFLCameraVirtual(glm::vec3 beginPosition, glm::vec3 worldUp = glm::vec3(0.0, 1.0, 0.0), GLfloat beginYaw = Camera_Yaw, GLfloat beginPich = Camera_Pitch) {
+    SFLCameraVirtual(gm::vec3 beginPosition, gm::vec3 worldUp = gm::vec3(0.0, 1.0, 0.0), GLfloat beginYaw = Camera_Yaw, GLfloat beginPich = Camera_Pitch) {
         _worldUp = worldUp;
         _defaultPosition = beginPosition;
         _defaultYaw = beginYaw;
@@ -98,25 +98,25 @@ public:
         updateCameraVectors();
     }
 
-    glm::mat4 viewMatrix() {
-        return glm::lookAt(position, position + axisFront, axisUp);
+    gm::mat4 viewMatrix() {
+        return gm::lookAt(position, position + axisFront, axisUp);
     }
 
 private:
-    glm::vec3 _worldUp;
-    glm::vec3 _defaultPosition;
+    gm::vec3 _worldUp;
+    gm::vec3 _defaultPosition;
     float _defaultYaw;
     float _defaultPich;
 
     void updateCameraVectors(){
-        glm::vec3 front;
-        front.x =  sin(glm::radians(currentYaw)) * cos(glm::radians(currentPich));
-        front.y =  sin(glm::radians(currentPich));
-        front.z = -cos(glm::radians(currentYaw)) * cos(glm::radians(currentPich));
+        gm::vec3 front;
+        front.x =  sin(gm::radians(currentYaw)) * cos(gm::radians(currentPich));
+        front.y =  sin(gm::radians(currentPich));
+        front.z = -cos(gm::radians(currentYaw)) * cos(gm::radians(currentPich));
 
-        axisFront = glm::normalize(front);
-        axisRight = glm::normalize(glm::cross(axisFront, _worldUp));
-        axisUp    = glm::normalize(glm::cross(axisRight, axisFront));
+        axisFront = gm::normalize(front);
+        axisRight = gm::normalize(gm::cross(axisFront, _worldUp));
+        axisUp    = gm::normalize(gm::cross(axisRight, axisFront));
     }
 
 };

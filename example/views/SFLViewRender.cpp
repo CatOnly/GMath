@@ -6,7 +6,7 @@
 
 SFLViewRender::SFLViewRender(QWidget *parent):QOpenGLWidget(parent)
 {
-    _camera = new SFLCameraVirtual(glm::vec3(0.0, 0.0, 3.0));
+    _camera = new SFLCameraVirtual(gm::vec3(0.0, 0.0, 3.0));
     setFixedSize(700, 700);
 }
 

@@ -59,3 +59,6 @@ HEADERS += \
     ../src/header/vec3.hpp \
     ../src/header/vec4.hpp \
     ../src/GMath.hpp
+
+RESOURCES += \
+    resource.qrc

@@ -40,7 +40,7 @@ void SFLViewControl::setupUI()
 
     _containerLayout->addWidget(_titleLabel);
     _containerLayout->addLayout(_kindsLayout);
-//    _containerLayout->addWidget(_currentWidget);
+    _containerLayout->addWidget(_currentWidget);
     _containerLayout->addStretch();
     _containerLayout->addWidget(_cameraResetBtn);
 

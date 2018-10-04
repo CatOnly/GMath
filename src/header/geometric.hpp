@@ -7,22 +7,9 @@
 #include "mat3x3.hpp"
 #include "mat4x4.hpp"
 
-// PI / 180.0
-#define GM_ANGLE_TO_RADIAN 0.017453
-
 namespace gm {
 
     // -- tools -------------------------
-    template<typename T>
-    const T *valuePtrFrom(const gm_mat3<T> &vector) {
-        return &(vector[0][0]);
-    }
-
-    template<typename T>
-    const T *valuePtrFrom(const gm_mat4<T> &vector) {
-        return &(vector[0][0]);
-    }
-
     template<typename T>
     gm_vec3<T> row(gm_mat3<T> mat, int index) {
         return gm_vec3<T>(mat[0][index], mat[1][index], mat[2][index]);
@@ -58,9 +45,9 @@ namespace gm {
         T col1Sum = m3[1][0] + m3[1][1] + m3[1][2];
         T col2Sum = m3[2][0] + m3[2][1] + m3[2][2];
 
-        gm_vec3<T> col = gm_vec3<T>(col0Sum, col1Sum, col2Sum);
+        gm_vec3<T> colSum = gm_vec3<T>(col0Sum, col1Sum, col2Sum);
 
-        return gm_mat3<T>(v3.x * col, v3.y * col, v3.z * col);
+        return gm_mat3<T>(v3.x * colSum, v3.y * colSum, v3.z * colSum);
     }
 
     template<typename T>
@@ -70,9 +57,9 @@ namespace gm {
         T col2Sum = m4[2][0] + m4[2][1] + m4[2][2] + m4[2][3];
         T col3Sum = m4[3][0] + m4[3][1] + m4[3][2] + m4[3][3];
 
-        gm_vec4<T> col = gm_vec4<T>(col0Sum, col1Sum, col2Sum, col3Sum);
+        gm_vec4<T> colSum = gm_vec4<T>(col0Sum, col1Sum, col2Sum, col3Sum);
 
-        return gm_mat4<T>(v4.x * col, v4.y * col, v4.z * col, v4.w * col);
+        return gm_mat4<T>(v4.x * colSum, v4.y * colSum, v4.z * colSum, v4.w * colSum);
     }
 
     // -- matrix * vector --------------
@@ -102,9 +89,9 @@ namespace gm {
         gm_vec3<T> row1 = row(matL, 1);
         gm_vec3<T> row2 = row(matL, 2);
 
-        gm_vec3<T> &col0 = matR[0];
-        gm_vec3<T> &col1 = matR[1];
-        gm_vec3<T> &col2 = matR[2];
+        const gm_vec3<T> &col0 = matR[0];
+        const gm_vec3<T> &col1 = matR[1];
+        const gm_vec3<T> &col2 = matR[2];
 
         return gm_mat3<T>(
             dot(row0, col0), dot(row1, col0), dot(row2,col0),
@@ -120,10 +107,10 @@ namespace gm {
         gm_vec4<T> row2 = row(matL, 2);
         gm_vec4<T> row3 = row(matL, 3);
 
-        gm_vec4<T> &col0 = matR[0];
-        gm_vec4<T> &col1 = matR[1];
-        gm_vec4<T> &col2 = matR[2];
-        gm_vec4<T> &col3 = matR[3];
+        const gm_vec4<T> &col0 = matR[0];
+        const gm_vec4<T> &col1 = matR[1];
+        const gm_vec4<T> &col2 = matR[2];
+        const gm_vec4<T> &col3 = matR[3];
 
         return gm_mat4<T>(
             dot(row0,col0), dot(row1,col0), dot(row2,col0), dot(row3,col0),
@@ -135,44 +122,63 @@ namespace gm {
 
     // -- base functions ----------------
     template<typename T>
-    T length(const gm_vec3<T> &vector){
-        return sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
+    T length(const gm_vec3<T> &v){
+        return sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
     }
 
     template<typename T>
-    T length(const gm_vec4<T> &vector){
-        return sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z + vector.w * vector.w);
+    T length(const gm_vec4<T> &v){
+        return sqrt(v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w);
     }
 
     template<typename T>
-    T dot(const gm_vec3<T> &vectorL, const gm_vec3<T> &vectorR) {
-        return vectorL.x * vectorR.x + vectorL.y * vectorR.y + vectorL.z * vectorR.z;
+    T dot(const gm_vec3<T> &vL, const gm_vec3<T> &vR) {
+        return vL.x * vR.x + vL.y * vR.y + vL.z * vR.z;
     }
 
     template<typename T>
-    T dot(const gm_vec4<T> &vectorL, const gm_vec4<T> &vectorR) {
-        return vectorL.x * vectorR.x + vectorL.y * vectorR.y + vectorL.z * vectorR.z + vectorL.w * vectorR.w;
+    T dot(const gm_vec4<T> &vL, const gm_vec4<T> &vR) {
+        return vL.x * vR.x + vL.y * vR.y + vL.z * vR.z + vL.w * vR.w;
     }
 
     template<typename T>
-    gm_vec3<T> cross(const gm_vec3<T> &vectorL, const gm_vec3<T> &vectorR) {
+    gm_vec3<T> cross(const gm_vec3<T> &vL, const gm_vec3<T> &vR) {
         return gm_vec3<T>(
-            vectorL.y * vectorR.z - vectorL.z * vectorR.y,
-            vectorL.z * vectorR.x - vectorL.x * vectorR.z,
-            vectorL.x * vectorR.y - vectorL.y * vectorR.x
+            vL.y * vR.z - vL.z * vR.y,
+            vL.z * vR.x - vL.x * vR.z,
+            vL.x * vR.y - vL.y * vR.x
         );
     }
 
     template<typename T>
-    gm_vec3<T> normalize(const gm_vec3<T> &vector) {
-        T avg = length(vector);
-        return gm_vec3<T>(vector.x/avg, vector.y/avg, vector.z/avg);
+    gm_vec3<T> normalize(const gm_vec3<T> &v) {
+        T avg = length(v);
+        return gm_vec3<T>(v.x/avg, v.y/avg, v.z/avg);
     }
 
     template<typename T>
-    gm_vec4<T> normalize(const gm_vec4<T> &vector) {
-        T avg = length(vector);
-        return gm_vec4<T>(vector.x/avg, vector.y/avg, vector.z/avg, vector.w/avg);
+    gm_vec4<T> normalize(const gm_vec4<T> &v) {
+        T avg = length(v);
+        return gm_vec4<T>(v.x/avg, v.y/avg, v.z/avg, v.w/avg);
+    }
+
+    template<typename T>
+    gm_mat3<T> transport(const gm_mat3<T> &m) {
+        return gm_mat3<T>(
+            row(m, 0), 
+            row(m, 1), 
+            row(m, 2)
+        );
+    }
+
+    template<typename T>
+    gm_mat4<T> transport(const gm_mat4<T> &m) {
+        return gm_mat4<T>(
+            row(m, 0), 
+            row(m, 1), 
+            row(m, 2),
+            row(m, 3)
+        );
     }
 }
 #endif // GEOMETRIC_H
