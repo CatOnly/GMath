@@ -81,6 +81,15 @@ namespace gm {
 
         explicit gm_vec4(const gm_vec3<T> &v, const T w = static_cast<T>(0)):gm_vec4(v.x, v.y, v.z, w){}
 
+        gm_vec4<T> operator - () const {            
+            return gm_vec4<T>(
+                x == static_cast<T>(0) ? x : -x, 
+                y == static_cast<T>(0) ? y : -y,
+                z == static_cast<T>(0) ? z : -z,
+                w == static_cast<T>(0) ? w : -w
+            );
+        }
+
         VEC_OPERATOR_INDEX(4)
 
         V4_OPERATOR_BASE(+)

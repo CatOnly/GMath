@@ -61,4 +61,4 @@ HEADERS += \
     ../src/GMath.hpp
 
 RESOURCES += \
-    resource.qrc
+    images/resource.qrc

@@ -38,7 +38,7 @@ namespace gm {
         gm_mat4(const T x, const T y, const T z, const T w):gm_mat4(
                                                                  static_cast<T>(x), static_cast<T>(0), static_cast<T>(0), static_cast<T>(0),
                                                                  static_cast<T>(0), static_cast<T>(y), static_cast<T>(0), static_cast<T>(0),
-                                                                 static_cast<T>(0), static_cast<T>(0), static_cast<T>(y), static_cast<T>(0),
+                                                                 static_cast<T>(0), static_cast<T>(0), static_cast<T>(z), static_cast<T>(0),
                                                                  static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(w)){}
         explicit gm_mat4(const gm_vec4<T> &vector4):gm_mat4(vector4.x, vector4.y, vector4.z, vector4.w){}
         explicit gm_mat4(const T value = static_cast<T>(1)):gm_mat4(value, value, value, value){}

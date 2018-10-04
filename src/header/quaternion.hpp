@@ -46,6 +46,15 @@ namespace gm {
 
         explicit gm_quaternion(const gm_vec3<T> &v, const T w = static_cast<T>(1)):gm_quaternion(v.x, v.y, v.z, w){}
 
+        gm_quaternion<T> operator - () const {
+            return gm_quaternion<T>(
+                x == static_cast<T>(0) ? x : -x, 
+                y == static_cast<T>(0) ? y : -y,
+                z == static_cast<T>(0) ? z : -z,
+                w == static_cast<T>(0) ? w : -w
+            );        
+        }
+
         gm_quaternion<T> operator * (const gm_quaternion<T> &q){
             return gm_quaternion<T>();
         }

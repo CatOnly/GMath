@@ -73,6 +73,14 @@ namespace gm {
         gm_vec3(T x = static_cast<T>(0)):gm_vec3(x,x,x){}
         gm_vec3(const gm_vec3<T> &vec):gm_vec3(vec.x, vec.y, vec.z){}
 
+        gm_vec3<T> operator - () const {
+            return gm_vec3<T>(
+                x == static_cast<T>(0) ? x : -x, 
+                y == static_cast<T>(0) ? y : -y,
+                z == static_cast<T>(0) ? z : -z
+            );
+        }   
+
         VEC_OPERATOR_INDEX(3)
 
         V3_OPERATOR_BASE(+)

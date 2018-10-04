@@ -62,6 +62,10 @@ public:
         transform = gm::rotate(transform, _rotateAngle.x, gm::vec3(1.0, 0.0, 0.0));
         transform = gm::rotate(transform, _rotateAngle.y, gm::vec3(0.0, 1.0, 0.0));
         transform = gm::rotate(transform, _rotateAngle.z, gm::vec3(0.0, 0.0, 1.0));
+
+        std::cout << "gm mix:" <<std::endl;
+        gm::print(transform);
+
         transform = gm::scale(transform, _scale);
         transform = gm::translate(transform, _move);
         transform = gm::perspective(_viewAngle, 1.0f, _viewFront, _viewFarther) * _delegateCamaera->viewMatrix() * transform;
@@ -232,7 +236,7 @@ private:
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
         // Load, create texture and generate mipmaps
-        QImage qImage(QString(":/theCat.jpg"));
+        QImage qImage(QString("://theCat.jpg"));
         int width = qImage.width();
         int height = qImage.height();
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, qImage.bits());
