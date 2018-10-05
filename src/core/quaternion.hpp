@@ -3,12 +3,12 @@
 
 #include "vec3.hpp"
 
-#define Q_OPERATOR_BASE(symbol) \
+#define GM_Q_OPERATOR_BASE(symbol) \
 gm_quaternion<T> operator symbol (const gm_quaternion<T> &a){\
     return gm_quaternion<T>(x symbol a.x, y symbol a.y, z symbol a.z, w symbol a.w);\
 }
 
-#define Q_OPERATOR_NUM_LEFT(symbol)\
+#define GM_Q_OPERATOR_NUM_LEFT(symbol)\
 gm_quaternion<T> operator symbol (const T &value){\
     gm_quaternion<T> v;\
     v.x = x symbol value;\
@@ -19,7 +19,7 @@ gm_quaternion<T> operator symbol (const T &value){\
     return v;\
 }
 
-#define Q_OPERATOR_SELF_NUM_LEFT(symbol)\
+#define GM_Q_OPERATOR_SELF_NUM_LEFT(symbol)\
 gm_quaternion<T>& operator symbol (const T &value){\
     x symbol value;\
     y symbol value;\
@@ -29,7 +29,7 @@ gm_quaternion<T>& operator symbol (const T &value){\
     return *this;\
 }
 
-#define Q_OPERATOR_NUM_RIGHT(symbol)\
+#define GM_Q_OPERATOR_NUM_RIGHT(symbol)\
 template<typename T> \
 gm_quaternion<T> operator symbol (const T &value, const gm_quaternion<T> &v){\
     return gm_quaternion<T>(static_cast<T>(value) symbol v.x, static_cast<T>(value) symbol v.y, static_cast<T>(value) symbol v.z, static_cast<T>(value) symbol v.w);\
@@ -47,20 +47,20 @@ namespace gm {
 
         explicit gm_quaternion(const gm_vec3<T> &v, const T w = static_cast<T>(1)):gm_quaternion(v.x, v.y, v.z, w){}
 
-        VEC_OPERATOR_INDEX(4)
+        GM_VEC_OPERATOR_INDEX(4)
 
-        Q_OPERATOR_BASE(+)
-        Q_OPERATOR_BASE(-)
+        GM_Q_OPERATOR_BASE(+)
+        GM_Q_OPERATOR_BASE(-)
 
-        Q_OPERATOR_NUM_LEFT(+)
-        Q_OPERATOR_NUM_LEFT(-)
-        Q_OPERATOR_NUM_LEFT(*)
-        Q_OPERATOR_NUM_LEFT(/)
+        GM_Q_OPERATOR_NUM_LEFT(+)
+        GM_Q_OPERATOR_NUM_LEFT(-)
+        GM_Q_OPERATOR_NUM_LEFT(*)
+        GM_Q_OPERATOR_NUM_LEFT(/)
 
-        Q_OPERATOR_SELF_NUM_LEFT(+=)
-        Q_OPERATOR_SELF_NUM_LEFT(-=)
-        Q_OPERATOR_SELF_NUM_LEFT(*=)
-        Q_OPERATOR_SELF_NUM_LEFT(/=)
+        GM_Q_OPERATOR_SELF_NUM_LEFT(+=)
+        GM_Q_OPERATOR_SELF_NUM_LEFT(-=)
+        GM_Q_OPERATOR_SELF_NUM_LEFT(*=)
+        GM_Q_OPERATOR_SELF_NUM_LEFT(/=)
 
         gm_quaternion<T> operator - () const {
             return gm_quaternion<T>(
@@ -76,10 +76,10 @@ namespace gm {
         }
     };
 
-    Q_OPERATOR_NUM_RIGHT(+)
-    Q_OPERATOR_NUM_RIGHT(-)
-    Q_OPERATOR_NUM_RIGHT(*)
-    Q_OPERATOR_NUM_RIGHT(/)
+    GM_Q_OPERATOR_NUM_RIGHT(+)
+    GM_Q_OPERATOR_NUM_RIGHT(-)
+    GM_Q_OPERATOR_NUM_RIGHT(*)
+    GM_Q_OPERATOR_NUM_RIGHT(/)
 
 
 }

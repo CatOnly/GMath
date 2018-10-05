@@ -43,29 +43,31 @@ namespace gm {
         explicit gm_mat4(const gm_vec4<T> &vector4):gm_mat4(vector4.x, vector4.y, vector4.z, vector4.w){}
         explicit gm_mat4(const T value = static_cast<T>(1)):gm_mat4(value, value, value, value){}
 
-        MAT_OPERATOR_INDEX(4)
+        GM_MAT_OPERATOR_INDEX(4)
 
-        MAT_OPERATOR_BASE(4, +)
-        MAT_OPERATOR_BASE(4, -)
+        GM_MAT_OPERATOR_BASE(4, +)
+        GM_MAT_OPERATOR_BASE(4, -)
 
-        MAT_OPERATOR_SELF(4, +=)
-        MAT_OPERATOR_SELF(4, -=)
+        GM_MAT_OPERATOR_SELF(4, +=)
+        GM_MAT_OPERATOR_SELF(4, -=)
 
-        MAT_OPERATOR_NUM_LEFT(4, +)
-        MAT_OPERATOR_NUM_LEFT(4, -)
-        MAT_OPERATOR_NUM_LEFT(4, *)
-        MAT_OPERATOR_NUM_LEFT(4, /)
+        GM_MAT_OPERATOR_NUM_LEFT(4, +)
+        GM_MAT_OPERATOR_NUM_LEFT(4, -)
+        GM_MAT_OPERATOR_NUM_LEFT(4, *)
+        GM_MAT_OPERATOR_NUM_LEFT(4, /)
 
-        MAT_OPERATOR_SELF_NUM_LEFT(4, +=)
-        MAT_OPERATOR_SELF_NUM_LEFT(4, -=)
-        MAT_OPERATOR_SELF_NUM_LEFT(4, *=)
-        MAT_OPERATOR_SELF_NUM_LEFT(4, /=)
+        GM_MAT_OPERATOR_SELF_NUM_LEFT(4, +=)
+        GM_MAT_OPERATOR_SELF_NUM_LEFT(4, -=)
+        GM_MAT_OPERATOR_SELF_NUM_LEFT(4, *=)
+        GM_MAT_OPERATOR_SELF_NUM_LEFT(4, /=)
     };
 
-    MAT_OPERATOR_NUM_RIGHT(4, +)
-    MAT_OPERATOR_NUM_RIGHT(4, -)
-    MAT_OPERATOR_NUM_RIGHT(4, *)
-    MAT_OPERATOR_NUM_RIGHT(4, /)
+    GM_MAT_OPERATOR_NUM_RIGHT(4, +)
+    GM_MAT_OPERATOR_NUM_RIGHT(4, -)
+    GM_MAT_OPERATOR_NUM_RIGHT(4, *)
+    GM_MAT_OPERATOR_NUM_RIGHT(4, /)
+
+    GM_MAT_VALUE_PTR_FROM(4)
 
     template<typename T>
     std::ostream& operator << (std::ostream &os, const gm_mat4<T> &m){
@@ -81,11 +83,6 @@ namespace gm {
                << m[3][i] << " "
                << endl;
         }
-    }
-
-    template<typename T>
-    const T *valuePtrFrom(const gm_mat4<T> &m4) {
-        return &(m4[0][0]);
     }
 
     template<typename T>

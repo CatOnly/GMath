@@ -36,29 +36,31 @@ namespace gm {
         explicit gm_mat3(const gm_vec3<T> &vector3):gm_mat3(vector3.x, vector3.y, vector3.z){}
         explicit gm_mat3(const T value = static_cast<T>(1)):gm_mat3(value, value, value){}
 
-        MAT_OPERATOR_INDEX(3)
+        GM_MAT_OPERATOR_INDEX(3)
 
-        MAT_OPERATOR_BASE(3, +)
-        MAT_OPERATOR_BASE(3, -)
+        GM_MAT_OPERATOR_BASE(3, +)
+        GM_MAT_OPERATOR_BASE(3, -)
 
-        MAT_OPERATOR_SELF(3, +=)
-        MAT_OPERATOR_SELF(3, -=)
+        GM_MAT_OPERATOR_SELF(3, +=)
+        GM_MAT_OPERATOR_SELF(3, -=)
 
-        MAT_OPERATOR_NUM_LEFT(3, +)
-        MAT_OPERATOR_NUM_LEFT(3, -)
-        MAT_OPERATOR_NUM_LEFT(3, *)
-        MAT_OPERATOR_NUM_LEFT(3, /)
+        GM_MAT_OPERATOR_NUM_LEFT(3, +)
+        GM_MAT_OPERATOR_NUM_LEFT(3, -)
+        GM_MAT_OPERATOR_NUM_LEFT(3, *)
+        GM_MAT_OPERATOR_NUM_LEFT(3, /)
 
-        MAT_OPERATOR_SELF_NUM_LEFT(3, +=)
-        MAT_OPERATOR_SELF_NUM_LEFT(3, -=)
-        MAT_OPERATOR_SELF_NUM_LEFT(3, *=)
-        MAT_OPERATOR_SELF_NUM_LEFT(3, /=)
+        GM_MAT_OPERATOR_SELF_NUM_LEFT(3, +=)
+        GM_MAT_OPERATOR_SELF_NUM_LEFT(3, -=)
+        GM_MAT_OPERATOR_SELF_NUM_LEFT(3, *=)
+        GM_MAT_OPERATOR_SELF_NUM_LEFT(3, /=)
     };
 
-    MAT_OPERATOR_NUM_RIGHT(3, +)
-    MAT_OPERATOR_NUM_RIGHT(3, -)
-    MAT_OPERATOR_NUM_RIGHT(3, *)
-    MAT_OPERATOR_NUM_RIGHT(3, /)
+    GM_MAT_OPERATOR_NUM_RIGHT(3, +)
+    GM_MAT_OPERATOR_NUM_RIGHT(3, -)
+    GM_MAT_OPERATOR_NUM_RIGHT(3, *)
+    GM_MAT_OPERATOR_NUM_RIGHT(3, /)
+
+    GM_MAT_VALUE_PTR_FROM(3)
 
     template<typename T>
     std::ostream& operator << (std::ostream &os, const gm_mat3<T> &m){
@@ -75,11 +77,6 @@ namespace gm {
         }
 
         return os;
-    }
-
-    template<typename T>
-    const T *valuePtrFrom(const gm_mat3<T> &m3) {
-        return &(m3[0][0]);
     }
 
     template<typename T>

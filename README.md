@@ -1,7 +1,7 @@
 <h1 align="center">GMath</h1>
 
 <p align="center">
-    <img src="https://img.shields.io/badge/version-0.0.7-blue.svg" alt="Version">
+    <img src="https://img.shields.io/badge/version-0.1.0-blue.svg" alt="Version">
     <a href="https://github.com/CatOnly/GMath/blob/master/LICENSE">
     	<img src="https://img.shields.io/github/license/mashape/apistatus.svg?style=style-flat-green" alt="LICENSE">
     </a>
@@ -31,7 +31,6 @@ Todo list:
 
 - Support the left-hand coordinate system.
 - Optimize code structure.
-- Add vec2 and mat2x2
 - ...
 
 

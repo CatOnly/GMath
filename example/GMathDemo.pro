@@ -27,38 +27,39 @@ INCLUDEPATH += $$PWD/../src
 SOURCES += \
         main.cpp \
         MainWindow.cpp \
-    common/SFLModelAbstract.cpp \
-    common/SFLSelectorLayout.cpp \
-    common/SFLVec1Editor.cpp \
-    common/SFLVec3Editor.cpp \
-    views/SFLViewControl.cpp \
-    views/SFLViewRender.cpp \
-    views/SFLViewNoLight.cpp
+        common/SFLModelAbstract.cpp \
+        common/SFLSelectorLayout.cpp \
+        common/SFLVec1Editor.cpp \
+        common/SFLVec3Editor.cpp \
+        views/SFLViewControl.cpp \
+        views/SFLViewRender.cpp \
+        views/SFLViewNoLight.cpp
 
 HEADERS += \
         MainWindow.h \
-    common/SFLDefine.h \
-    common/SFLModelAbstract.h \
-    common/SFLSelectorLayout.h \
-    common/SFLToolBtn.h \
-    common/SFLVec1Editor.h \
-    common/SFLVec3Editor.h \
-    common/SFLViewAbstract.h \
-    views/SFLViewControl.h \
-    views/SFLViewRender.h \
-    views/SFLViewNoLight.h \
-    SFLCameraVirtual.h \
-    SFLModelNoLight.h \
-    ../src/core/config.h \
-    ../src/core/geometric.hpp \
-    ../src/core/quaternion.hpp \
-    ../src/core/mat.hpp \
-    ../src/core/mat3x3.hpp \
-    ../src/core/mat4x4.hpp \
-    ../src/core/vec2.hpp \
-    ../src/core/vec3.hpp \
-    ../src/core/vec4.hpp \
-    ../src/GMath.hpp
+        common/SFLDefine.h \
+        common/SFLModelAbstract.h \
+        common/SFLSelectorLayout.h \
+        common/SFLToolBtn.h \
+        common/SFLVec1Editor.h \
+        common/SFLVec3Editor.h \
+        common/SFLViewAbstract.h \
+        views/SFLViewControl.h \
+        views/SFLViewRender.h \
+        views/SFLViewNoLight.h \
+        SFLCameraVirtual.h \
+        SFLModelNoLight.h \
+        ../src/core/config.h \
+        ../src/core/geometric.hpp \
+        ../src/core/quaternion.hpp \
+        ../src/core/mat.hpp \
+        ../src/core/mat2x2.hpp \
+        ../src/core/mat3x3.hpp \
+        ../src/core/mat4x4.hpp \
+        ../src/core/vec2.hpp \
+        ../src/core/vec3.hpp \
+        ../src/core/vec4.hpp \
+        ../src/GMath.hpp
 
 RESOURCES += \
     images/resource.qrc

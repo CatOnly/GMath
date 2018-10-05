@@ -3,12 +3,12 @@
 
 #include "vec2.hpp"
 
-#define V3_OPERATOR_BASE(symbol) \
+#define GM_V3_OPERATOR_BASE(symbol) \
 gm_vec3<T> operator symbol (const gm_vec3<T> &v) const {\
     return gm_vec3<T>(x symbol v.x, y symbol v.y, z symbol v.z);\
 }
 
-#define V3_OPERATOR_SELF(symbol) \
+#define GM_V3_OPERATOR_SELF(symbol) \
 gm_vec3<T>& operator symbol (const gm_vec3<T> &v){\
     x symbol v.x;\
     y symbol v.y;\
@@ -17,7 +17,7 @@ gm_vec3<T>& operator symbol (const gm_vec3<T> &v){\
     return *this;\
 }
 
-#define V3_OPERATOR_SELF_LAST(symbol) \
+#define GM_V3_OPERATOR_SELF_LAST(symbol) \
 gm_vec3<T> operator symbol (int){\
     gm_vec3<T> tmp(*this);\
     symbol x;\
@@ -26,7 +26,7 @@ gm_vec3<T> operator symbol (int){\
 \
     return tmp;\
 }
-#define V3_OPERATOR_SELF_FIRST(symbol) \
+#define GM_V3_OPERATOR_SELF_FIRST(symbol) \
 gm_vec3<T>& operator symbol (){\
     symbol x;\
     symbol y;\
@@ -35,7 +35,7 @@ gm_vec3<T>& operator symbol (){\
     return *this;\
 }
 
-#define V3_OPERATOR_NUM_RIGHT(symbol)\
+#define GM_V3_OPERATOR_NUM_RIGHT(symbol)\
 gm_vec3<T> operator symbol (const T &value) const {\
     gm_vec3<T> v;\
     v.x = x symbol value;\
@@ -45,7 +45,7 @@ gm_vec3<T> operator symbol (const T &value) const {\
     return v;\
 }
 
-#define V3_OPERATOR_SELF_NUM_RIGHT(symbol)\
+#define GM_V3_OPERATOR_SELF_NUM_RIGHT(symbol)\
 gm_vec3<T>& operator symbol (const T &value){\
     x symbol value;\
     y symbol value;\
@@ -54,7 +54,7 @@ gm_vec3<T>& operator symbol (const T &value){\
     return *this;\
 }
 
-#define V3_OPERATOR_NUM_LEFT(symbol)\
+#define GM_V3_OPERATOR_NUM_LEFT(symbol)\
 template<typename T> \
 gm_vec3<T> operator symbol (const T &value, const gm_vec3<T> &v){\
     return gm_vec3<T>(value symbol v.x, value symbol v.y, value symbol v.z);\
@@ -81,38 +81,38 @@ namespace gm {
             );
         }   
 
-        VEC_OPERATOR_INDEX(3)
+        GM_VEC_OPERATOR_INDEX(3)
 
-        V3_OPERATOR_BASE(+)
-        V3_OPERATOR_BASE(-)
-        V3_OPERATOR_BASE(*)
-        V3_OPERATOR_BASE(/)
+        GM_V3_OPERATOR_BASE(+)
+        GM_V3_OPERATOR_BASE(-)
+        GM_V3_OPERATOR_BASE(*)
+        GM_V3_OPERATOR_BASE(/)
 
-        V3_OPERATOR_SELF(+=)
-        V3_OPERATOR_SELF(-=)
-        V3_OPERATOR_SELF(*=)
-        V3_OPERATOR_SELF(/=)
+        GM_V3_OPERATOR_SELF(+=)
+        GM_V3_OPERATOR_SELF(-=)
+        GM_V3_OPERATOR_SELF(*=)
+        GM_V3_OPERATOR_SELF(/=)
 
-        V3_OPERATOR_SELF_LAST(++)
-        V3_OPERATOR_SELF_LAST(--)
-        V3_OPERATOR_SELF_FIRST(++)
-        V3_OPERATOR_SELF_FIRST(--)
+        GM_V3_OPERATOR_SELF_LAST(++)
+        GM_V3_OPERATOR_SELF_LAST(--)
+        GM_V3_OPERATOR_SELF_FIRST(++)
+        GM_V3_OPERATOR_SELF_FIRST(--)
 
-        V3_OPERATOR_NUM_RIGHT(+)
-        V3_OPERATOR_NUM_RIGHT(-)
-        V3_OPERATOR_NUM_RIGHT(*)
-        V3_OPERATOR_NUM_RIGHT(/)
+        GM_V3_OPERATOR_NUM_RIGHT(+)
+        GM_V3_OPERATOR_NUM_RIGHT(-)
+        GM_V3_OPERATOR_NUM_RIGHT(*)
+        GM_V3_OPERATOR_NUM_RIGHT(/)
 
-        V3_OPERATOR_SELF_NUM_RIGHT(+=)
-        V3_OPERATOR_SELF_NUM_RIGHT(-=)
-        V3_OPERATOR_SELF_NUM_RIGHT(*=)
-        V3_OPERATOR_SELF_NUM_RIGHT(/=)
+        GM_V3_OPERATOR_SELF_NUM_RIGHT(+=)
+        GM_V3_OPERATOR_SELF_NUM_RIGHT(-=)
+        GM_V3_OPERATOR_SELF_NUM_RIGHT(*=)
+        GM_V3_OPERATOR_SELF_NUM_RIGHT(/=)
     };
 
-    V3_OPERATOR_NUM_LEFT(+)
-    V3_OPERATOR_NUM_LEFT(-)
-    V3_OPERATOR_NUM_LEFT(*)
-    V3_OPERATOR_NUM_LEFT(/)
+    GM_V3_OPERATOR_NUM_LEFT(+)
+    GM_V3_OPERATOR_NUM_LEFT(-)
+    GM_V3_OPERATOR_NUM_LEFT(*)
+    GM_V3_OPERATOR_NUM_LEFT(/)
 
     template<typename T>
     std::ostream& operator << (std::ostream &os, const gm_vec3<T> &v){
