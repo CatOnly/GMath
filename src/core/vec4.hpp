@@ -38,7 +38,7 @@ gm_vec4<T>& operator symbol (){\
     return *this;\
 }
 
-#define V4_OPERATOR_NUM_LEFT(symbol)\
+#define V4_OPERATOR_NUM_RIGHT(symbol)\
 gm_vec4<T> operator symbol (const T &value) const {\
     gm_vec4<T> v;\
     v.x = x symbol value;\
@@ -49,7 +49,7 @@ gm_vec4<T> operator symbol (const T &value) const {\
     return v;\
 }
 
-#define V4_OPERATOR_SELF_NUM_LEFT(symbol)\
+#define V4_OPERATOR_SELF_NUM_RIGHT(symbol)\
 gm_vec4<T>& operator symbol (const T &value){\
     x symbol value;\
     y symbol value;\
@@ -59,10 +59,10 @@ gm_vec4<T>& operator symbol (const T &value){\
     return *this;\
 }
 
-#define V4_OPERATOR_NUM_RIGHT(symbol)\
+#define V4_OPERATOR_NUM_LEFT(symbol)\
 template<typename T> \
 gm_vec4<T> operator symbol (const T &value, const gm_vec4<T> &v){\
-    return gm_vec4<T>(static_cast<T>(value) symbol v.x, static_cast<T>(value) symbol v.y, static_cast<T>(value) symbol v.z, static_cast<T>(value) symbol v.w);\
+    return gm_vec4<T>(value symbol v.x, value symbol v.y, value symbol v.z, value symbol v.w);\
 }
 
 namespace gm {
@@ -107,21 +107,58 @@ namespace gm {
         V4_OPERATOR_SELF_FIRST(++)
         V4_OPERATOR_SELF_FIRST(--)
 
-        V4_OPERATOR_NUM_LEFT(+)
-        V4_OPERATOR_NUM_LEFT(-)
-        V4_OPERATOR_NUM_LEFT(*)
-        V4_OPERATOR_NUM_LEFT(/)
+        V4_OPERATOR_NUM_RIGHT(+)
+        V4_OPERATOR_NUM_RIGHT(-)
+        V4_OPERATOR_NUM_RIGHT(*)
+        V4_OPERATOR_NUM_RIGHT(/)
 
-        V4_OPERATOR_SELF_NUM_LEFT(+=)
-        V4_OPERATOR_SELF_NUM_LEFT(-=)
-        V4_OPERATOR_SELF_NUM_LEFT(*=)
-        V4_OPERATOR_SELF_NUM_LEFT(/=)
+        V4_OPERATOR_SELF_NUM_RIGHT(+=)
+        V4_OPERATOR_SELF_NUM_RIGHT(-=)
+        V4_OPERATOR_SELF_NUM_RIGHT(*=)
+        V4_OPERATOR_SELF_NUM_RIGHT(/=)
     };
 
-    V4_OPERATOR_NUM_RIGHT(+)
-    V4_OPERATOR_NUM_RIGHT(-)
-    V4_OPERATOR_NUM_RIGHT(*)
-    V4_OPERATOR_NUM_RIGHT(/)
+    V4_OPERATOR_NUM_LEFT(+)
+    V4_OPERATOR_NUM_LEFT(-)
+    V4_OPERATOR_NUM_LEFT(*)
+    V4_OPERATOR_NUM_LEFT(/)
+
+    template<typename T>
+    std::ostream& operator << (std::ostream &os, const gm_vec4<T> &v){
+        using namespace std;
+        os << setprecision(GM_OUTPUT_PRECISION)
+           << setw(GM_OUTPUT_WIDTH)
+           << GM_OUTPUT_POINT
+           <<"(" << v.x << ", " << v.y << ", " << v.z << ", " << v.w << ") ";
+
+        return os;
+    }
+
+    template<typename T>
+    T length(const gm_vec4<T> &v){
+        return sqrt(v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w);
+    }
+
+    template<typename T>
+    T distance(const gm_vec4<T> &vFrom, const gm_vec4<T> &vTo) {
+        T disX = vTo.x - vFrom.x;
+        T disY = vTo.y - vFrom.y;
+        T disZ = vTo.z - vFrom.z;
+        T disW = vTo.w - vFrom.w;
+
+        return static_cast<T>(sqrt(disX*disX +  disY*disY + disZ*disZ + disW*disW));\
+    }
+
+    template<typename T>
+    gm_vec4<T> normalize(const gm_vec4<T> &v) {
+        T avg = length(v);
+        return gm_vec4<T>(v.x/avg, v.y/avg, v.z/avg, v.w/avg);
+    }
+
+    template<typename T>
+    T dot(const gm_vec4<T> &vL, const gm_vec4<T> &vR) {
+        return vL.x * vR.x + vL.y * vR.y + vL.z * vR.z + vL.w * vR.w;
+    }
 }
 
 #endif // GM_VEC4_H

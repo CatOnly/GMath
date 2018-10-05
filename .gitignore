@@ -33,4 +33,5 @@
 *.out
 *.app
 .vscode
-/example/build
+.user
+/example_build

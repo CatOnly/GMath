@@ -8,11 +8,11 @@
 
 SFLViewControl::SFLViewControl(QWidget *parent):QDockWidget(parent)
 {
-    _titleLabel = new QLabel("标题");
-    _kindsLayout = new SFLSelectorLayout("类型", this);
+    _titleLabel = new QLabel("Title");
+    _kindsLayout = new SFLSelectorLayout("Type", this);
     _containerLayout = new QVBoxLayout();
     _currentWidget = nullptr;
-    _cameraResetBtn = new QPushButton("还 原",this);
+    _cameraResetBtn = new QPushButton("Reset",this);
 
     setupUI();
 }

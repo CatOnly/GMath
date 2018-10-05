@@ -2,6 +2,11 @@
 #define GM_VEC2_H
 
 #include <cassert>
+#include <math.h>
+#include <iostream>
+#include <iomanip>
+
+#include "config.h"
 
 #define VEC_OPERATOR_INDEX(size)\
 T & operator[](int i) { \

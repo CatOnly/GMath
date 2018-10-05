@@ -1,14 +1,7 @@
 #ifndef GMATH_H
 #define GMATH_H
 
-#include "header/debug.hpp"
-#include "header/transform.hpp"
-
-/**
- * Right-handed coordinate is default
- * Switch to Left-handed coordinate, open this macro
- */
-// #define GM_USE_COORDINATE_LEFTHAND
+#include "core/geometric.hpp"
 
 namespace gm {
 

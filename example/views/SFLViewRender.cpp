@@ -52,29 +52,29 @@ void SFLViewRender::keyPressEvent(QKeyEvent *event)
     switch(event->key()){
     case Qt::Key_W:
     case Qt::Key_Up:
-//        _camera->moveStepFromDirection(SFLCameraVirtual::moveForward);
+        _camera->moveStepFromDirection(SFLCameraVirtual::moveForward);
         keyName = "W";
         break;
     case Qt::Key_S:
     case Qt::Key_Down:
-//        _camera->moveStepFromDirection(SFLCameraVirtual::moveBackward);
+        _camera->moveStepFromDirection(SFLCameraVirtual::moveBackward);
         keyName = "S";
         break;
     case Qt::Key_A:
     case Qt::Key_Left:
-//        _camera->moveStepFromDirection(SFLCameraVirtual::moveLeft);
+        _camera->moveStepFromDirection(SFLCameraVirtual::moveLeft);
         keyName = "A";
         break;
     case Qt::Key_D:
     case Qt::Key_Right:
-//        _camera->moveStepFromDirection(SFLCameraVirtual::moveRight);
+        _camera->moveStepFromDirection(SFLCameraVirtual::moveRight);
         keyName = "D";
         break;
     }
     qDebug() << "Key Press " << keyName;
 
     update();
-//    QMetaObject::invokeMethod(this, "update", Qt::DirectConnection);
+    QMetaObject::invokeMethod(this, "update", Qt::DirectConnection);
 }
 
 void SFLViewRender::mousePressEvent(QMouseEvent *event)
@@ -85,7 +85,7 @@ void SFLViewRender::mousePressEvent(QMouseEvent *event)
 void SFLViewRender::mouseMoveEvent(QMouseEvent *event)
 {
     QPoint offsetPos = event->pos() - _currentPoint;
-//    _camera->rotateByMouseOffset(offsetPos.x(), offsetPos.y());
+    _camera->rotateByMouseOffset(offsetPos.x(), offsetPos.y());
     update();
 }
 void SFLViewRender::mouseReleaseEvent(QMouseEvent *event)

@@ -7,18 +7,18 @@
 
 SFLViewNoLight::SFLViewNoLight(SFLModelAbstract *owner, QWidget *parent) : SFLViewAbstract(owner, parent)
 {
-    _types = QStringList({"顶点着色","纹理贴图"});
-    _drawType = new SFLSelectorLayout("绘制方式");
-    _drawType->setSelections(QStringList({"填充","线条"}));
-    _direction = new SFLSelectorLayout("纹理方向");
-    _direction->setSelections(QStringList({"默认","修正"}));
-    _colorWeight = new SFLVec1Editor("颜色比重");
-    _scale = new SFLVec3Editor("缩放", SFLVec3Editor::typePosition);
-    _rotate = new SFLVec3Editor("旋转", SFLVec3Editor::typePosition);
-    _move = new SFLVec3Editor("位移", SFLVec3Editor::typePosition);
-    _viewAngle = new SFLVec1Editor("视角", SFLVec1Editor::typePosition);
-    _viewFront = new SFLVec1Editor("近平面", SFLVec1Editor::typePosition);
-    _viewFarther = new SFLVec1Editor("远平面", SFLVec1Editor::typePosition);
+    _types = QStringList({"Vertex","Texture2D"});
+    _drawType = new SFLSelectorLayout("Color");
+    _drawType->setSelections(QStringList({"Fill","Line"}));
+    _direction = new SFLSelectorLayout("Direction Y");
+    _direction->setSelections(QStringList({"Default","Corrected"}));
+    _colorWeight = new SFLVec1Editor("Mix ratio");
+    _scale = new SFLVec3Editor("Scale", SFLVec3Editor::typePosition);
+    _rotate = new SFLVec3Editor("Rotation", SFLVec3Editor::typePosition);
+    _move = new SFLVec3Editor("Move", SFLVec3Editor::typePosition);
+    _viewAngle = new SFLVec1Editor("View angle", SFLVec1Editor::typePosition);
+    _viewFront = new SFLVec1Editor("Near plane", SFLVec1Editor::typePosition);
+    _viewFarther = new SFLVec1Editor("Far plane", SFLVec1Editor::typePosition);
 
     setupUI();
     initData();
@@ -53,13 +53,12 @@ void SFLViewNoLight::initData(){
 
 void SFLViewNoLight::setupUI()
 {
-    QLabel *subTitle = new QLabel("沿坐标轴变换");
+    QLabel *subTitle = new QLabel("Coordinate axis");
     subTitle->setContentsMargins(10, 5, 10, 0);
-    QLabel *subTitle2 = new QLabel("视口设置");
+    QLabel *subTitle2 = new QLabel("Field of view");
     subTitle2->setContentsMargins(10, 5, 10, 0);
 
     _viewAngle->setSuffix("º");
-
 
     QVBoxLayout *layoutMain = static_cast<QVBoxLayout *>(layout());
 

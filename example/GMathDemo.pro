@@ -49,15 +49,15 @@ HEADERS += \
     views/SFLViewNoLight.h \
     SFLCameraVirtual.h \
     SFLModelNoLight.h \
-    ../src/header/debug.hpp \
-    ../src/header/geometric.hpp \
-    ../src/header/mat.hpp \
-    ../src/header/mat3x3.hpp \
-    ../src/header/mat4x4.hpp \
-    ../src/header/transform.hpp \
-    ../src/header/vec2.hpp \
-    ../src/header/vec3.hpp \
-    ../src/header/vec4.hpp \
+    ../src/core/config.h \
+    ../src/core/geometric.hpp \
+    ../src/core/quaternion.hpp \
+    ../src/core/mat.hpp \
+    ../src/core/mat3x3.hpp \
+    ../src/core/mat4x4.hpp \
+    ../src/core/vec2.hpp \
+    ../src/core/vec3.hpp \
+    ../src/core/vec4.hpp \
     ../src/GMath.hpp
 
 RESOURCES += \

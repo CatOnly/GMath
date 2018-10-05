@@ -1,7 +1,7 @@
 #ifndef GM_QUATERNION_H
 #define GM_QUATERNION_H
 
-#include "vec4.hpp"
+#include "vec3.hpp"
 
 #define Q_OPERATOR_BASE(symbol) \
 gm_quaternion<T> operator symbol (const gm_quaternion<T> &a){\
@@ -36,6 +36,7 @@ gm_quaternion<T> operator symbol (const T &value, const gm_quaternion<T> &v){\
 }
 
 namespace gm {
+
     template <typename T> class gm_quaternion
     {
     public:
@@ -45,19 +46,6 @@ namespace gm {
         gm_quaternion(const gm_quaternion<T> &v):gm_quaternion(v.x, v.y, v.z, v.w){}
 
         explicit gm_quaternion(const gm_vec3<T> &v, const T w = static_cast<T>(1)):gm_quaternion(v.x, v.y, v.z, w){}
-
-        gm_quaternion<T> operator - () const {
-            return gm_quaternion<T>(
-                x == static_cast<T>(0) ? x : -x, 
-                y == static_cast<T>(0) ? y : -y,
-                z == static_cast<T>(0) ? z : -z,
-                w == static_cast<T>(0) ? w : -w
-            );        
-        }
-
-        gm_quaternion<T> operator * (const gm_quaternion<T> &q){
-            return gm_quaternion<T>();
-        }
 
         VEC_OPERATOR_INDEX(4)
 
@@ -73,12 +61,27 @@ namespace gm {
         Q_OPERATOR_SELF_NUM_LEFT(-=)
         Q_OPERATOR_SELF_NUM_LEFT(*=)
         Q_OPERATOR_SELF_NUM_LEFT(/=)
+
+        gm_quaternion<T> operator - () const {
+            return gm_quaternion<T>(
+                x == static_cast<T>(0) ? x : -x, 
+                y == static_cast<T>(0) ? y : -y,
+                z == static_cast<T>(0) ? z : -z,
+                w == static_cast<T>(0) ? w : -w
+            );        
+        }
+
+        gm_quaternion<T> operator * (const gm_quaternion<T> &q){
+            return gm_quaternion<T>();
+        }
     };
 
     Q_OPERATOR_NUM_RIGHT(+)
     Q_OPERATOR_NUM_RIGHT(-)
     Q_OPERATOR_NUM_RIGHT(*)
     Q_OPERATOR_NUM_RIGHT(/)
+
+
 }
 
 #endif //GM_QUATERNION_H

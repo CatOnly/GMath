@@ -1,8 +1,8 @@
 #ifndef SFLMODELSNOLIGHT_H
 #define SFLMODELSNOLIGHT_H
 
-#include "../common/SFLModelAbstract.h"
-#include "../views/SFLViewNoLight.h"
+#include "common/SFLModelAbstract.h"
+#include "views/SFLViewNoLight.h"
 
 #include <QImage>
 #include <QCoreApplication>
@@ -12,7 +12,7 @@ class SFLModelNoLight: public SFLModelAbstract
 {
 public:
     SFLModelNoLight():SFLModelAbstract(){
-        _btn->setText("基本操作");
+        _btn->setText("Basic");
         _view = new SFLViewNoLight(this);
         _rotateAngle = gm::vec3(0.0, 0.0, 0.0);
         _scale = gm::vec3(1.0, 1.0, 1.0);
@@ -58,14 +58,10 @@ public:
         glUniform1f(glGetUniformLocation(_programID, "hasRightDir"), _hasRightDirection ? 1.0f : 0.0f);
         glUniform1f(glGetUniformLocation(_programID, "colorWeight"), _mixColorWeight);
 
-        gm::mat4 transform(1.0);
+        gm::mat4 transform;
         transform = gm::rotate(transform, _rotateAngle.x, gm::vec3(1.0, 0.0, 0.0));
         transform = gm::rotate(transform, _rotateAngle.y, gm::vec3(0.0, 1.0, 0.0));
         transform = gm::rotate(transform, _rotateAngle.z, gm::vec3(0.0, 0.0, 1.0));
-
-        std::cout << "gm mix:" <<std::endl;
-        gm::print(transform);
-
         transform = gm::scale(transform, _scale);
         transform = gm::translate(transform, _move);
         transform = gm::perspective(_viewAngle, 1.0f, _viewFront, _viewFarther) * _delegateCamaera->viewMatrix() * transform;
@@ -131,9 +127,9 @@ private:
     GLfloat _viewFront = 0.1;
     GLfloat _viewFarther = 100.0;
 
-    GLuint _vertexArrayObjRef = 0;   // 顶点数组对象，储存 顶点属性
-    GLuint _vertexBufferObjRef = 0;  // 顶点缓冲对象
-    GLuint _elementBufferObjRef = 0; // 索引缓冲对象
+    GLuint _vertexArrayObjRef = 0;
+    GLuint _vertexBufferObjRef = 0;
+    GLuint _elementBufferObjRef = 0;
     GLuint _texture2DRef = 0;
     GLuint _programID = 0;
 
@@ -226,7 +222,7 @@ private:
     }
 
     void setupTexture2D() {
-        glActiveTexture(GL_TEXTURE0); // 默认激活可不写
+        glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, _texture2DRef);
         // Set our texture parameters
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); //
