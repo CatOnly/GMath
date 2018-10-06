@@ -8,15 +8,7 @@
 #include "mat3x3.hpp"
 #include "mat4x4.hpp"
 
-// PI / 180.0
-#define GM_ANGLE_TO_RADIAN 0.017453
-
 namespace gm {    
-    
-    template<typename T>
-    T radians(const T angle){
-        return angle * static_cast<T>(GM_ANGLE_TO_RADIAN);
-    }
 
     template<typename T>
     gm_mat4<T> translate(const gm_mat4<T> &m4, const gm_vec3<T> &v3) {

@@ -152,7 +152,10 @@ namespace gm {
     template<typename T>
     gm_vec4<T> normalize(const gm_vec4<T> &v) {
         T avg = length(v);
-        return gm_vec4<T>(v.x/avg, v.y/avg, v.z/avg, v.w/avg);
+        bool isNoZero = avg != static_cast<T>(0);
+        GM_ASSERT(isNoZero);
+
+        return isNoZero ? gm_vec4<T>(v.x/avg, v.y/avg, v.z/avg, v.w/avg) : gm_vec4<T>();
     }
 
     template<typename T>

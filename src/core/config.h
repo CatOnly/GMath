@@ -14,5 +14,9 @@
 #define GM_LEFT_HANDED  1
 #define GM_USE_COORDINATE GM_RIGHT_HANDED
 
+#define GM_DEBUG_ON  1
+#define GM_DEBUG_OFF 0
+#define GM_DEBUG GM_DEBUG_ON
+
 
 #endif // GMCONFIG_H

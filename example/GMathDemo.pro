@@ -59,7 +59,8 @@ HEADERS += \
         ../src/core/vec2.hpp \
         ../src/core/vec3.hpp \
         ../src/core/vec4.hpp \
-        ../src/GMath.hpp
+        ../src/GMath.hpp \
+    ../src/core/util.hpp
 
 RESOURCES += \
     images/resource.qrc
