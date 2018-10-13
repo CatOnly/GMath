@@ -43,10 +43,19 @@ namespace gm {
         explicit gm_mat4(const gm_vec4<T> &vector4):gm_mat4(vector4.x, vector4.y, vector4.z, vector4.w){}
         explicit gm_mat4(const T value = static_cast<T>(1)):gm_mat4(value, value, value, value){}
         explicit gm_mat4(const gm_mat3<T> &m3){
-            _column[0] = m3[0];
-            _column[1] = m3[1];
-            _column[2] = m3[2];
+            _column[0] = gm_vec4<T>(m3[0]);
+            _column[1] = gm_vec4<T>(m3[1]);
+            _column[2] = gm_vec4<T>(m3[2]);
             _column[3] = gm_vec4<T>(static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(1));
+        }
+
+        gm_mat4<T> operator - () const {
+            return gm_mat4<T>(
+                -_column[0],
+                -_column[1],
+                -_column[2],
+                -_column[3]
+            );
         }
 
         GM_MAT_OPERATOR_INDEX(4)
@@ -82,13 +91,15 @@ namespace gm {
            << setw(GM_OUTPUT_WIDTH)
            << GM_OUTPUT_POINT;
 
-        for (int i = 0; i < 3; ++i){
+        for (int i = 0; i < 4; ++i) {
             os << m[0][i] << " "
                << m[1][i] << " "
                << m[2][i] << " "
-               << m[3][i] << " "
-               << endl;
+               << m[3][i];
+            if (i != 3) os << endl;
         }
+
+        return os;
     }
 
     template<typename T>

@@ -2,7 +2,7 @@
 #define GM_MAT3X3_H
 
 #include "vec3.hpp"
-#include "mat.hpp"
+#include "mat2x2.hpp"
 
 namespace gm {
 
@@ -35,6 +35,20 @@ namespace gm {
                                                          static_cast<T>(0), static_cast<T>(0), static_cast<T>(z)){}
         explicit gm_mat3(const gm_vec3<T> &vector3):gm_mat3(vector3.x, vector3.y, vector3.z){}
         explicit gm_mat3(const T value = static_cast<T>(1)):gm_mat3(value, value, value){}
+
+        explicit gm_mat3(const gm_mat2<T> &m2){
+            _column[0] = gm_vec3<T>(m2[0]);
+            _column[1] = gm_vec3<T>(m2[1]);
+            _column[2] = gm_vec3<T>(static_cast<T>(0), static_cast<T>(0), static_cast<T>(1));
+        }
+
+        gm_mat3<T> operator - () const {
+            return gm_mat3<T>(
+                -_column[0],
+                -_column[1],
+                -_column[2]
+            );
+        }
 
         GM_MAT_OPERATOR_INDEX(3)
 
@@ -72,8 +86,8 @@ namespace gm {
         for (int i = 0; i < 3; ++i){
             os << m[0][i] << " "
                << m[1][i] << " "
-               << m[2][i] << " "
-               << endl;
+               << m[2][i];
+            if (i != 2) os << endl;
         }
 
         return os;

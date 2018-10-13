@@ -26,6 +26,7 @@ gm_mat##size<T> operator symbol (const gm_mat##size<T> &m){\
 \
     return mTmp;\
 }
+
 #define GM_MAT_OPERATOR_SELF(size, symbol)\
 gm_mat##size<T>& operator symbol (const gm_mat##size<T> &m){\
     for (int i = 0; i < size; ++i){\

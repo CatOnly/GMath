@@ -31,6 +31,13 @@ namespace gm {
         explicit gm_mat2(const gm_vec2<T> &v):gm_mat2(v.x, v.y){}
         explicit gm_mat2(const T value = static_cast<T>(1)):gm_mat2(value, value){}
 
+        gm_mat2<T> operator - () const {
+            return gm_mat2<T>(
+                -_column[0],
+                -_column[1]
+            );
+        }
+
         GM_MAT_OPERATOR_INDEX(2)
 
         GM_MAT_OPERATOR_BASE(2, +)
@@ -66,8 +73,8 @@ namespace gm {
 
         for (int i = 0; i < 2; ++i){
             os << m[0][i] << " "
-               << m[1][i] << " "
-               << endl;
+               << m[1][i];
+            if (i != 1) os << endl;
         }
 
         return os;
