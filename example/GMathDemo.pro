@@ -60,7 +60,8 @@ HEADERS += \
         ../src/core/vec3.hpp \
         ../src/core/vec4.hpp \
         ../src/GMath.hpp \
-    ../src/core/util.hpp
+    ../src/core/util.hpp \
+    SFLTest.hpp
 
 RESOURCES += \
     images/resource.qrc

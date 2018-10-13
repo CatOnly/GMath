@@ -2,7 +2,7 @@
 #define GM_MAT4X4_H
 
 #include "vec4.hpp"
-#include "mat.hpp"
+#include "mat3x3.hpp"
 
 namespace gm {
 
@@ -42,6 +42,12 @@ namespace gm {
                                                                  static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(w)){}
         explicit gm_mat4(const gm_vec4<T> &vector4):gm_mat4(vector4.x, vector4.y, vector4.z, vector4.w){}
         explicit gm_mat4(const T value = static_cast<T>(1)):gm_mat4(value, value, value, value){}
+        explicit gm_mat4(const gm_mat3<T> &m3){
+            _column[0] = m3[0];
+            _column[1] = m3[1];
+            _column[2] = m3[2];
+            _column[3] = gm_vec4<T>(static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(1));
+        }
 
         GM_MAT_OPERATOR_INDEX(4)
 

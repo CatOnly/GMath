@@ -76,8 +76,8 @@ namespace gm {
         union { T x, r, s;};
         union { T y, g, t;};
 
-        gm_vec2(T x, T y):x(static_cast<T>(x)),y(static_cast<T>(y)){}
-        gm_vec2(T x = static_cast<T>(0)):gm_vec2(x,x){}
+        gm_vec2(const T x, const T y):x(static_cast<T>(x)),y(static_cast<T>(y)){}
+        gm_vec2(const T x = static_cast<T>(0)):gm_vec2(x,x){}
         gm_vec2(const gm_vec2<T> &vec):gm_vec2(vec.x, vec.y){}
 
         gm_vec2<T> operator - () const {

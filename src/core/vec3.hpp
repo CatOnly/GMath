@@ -69,9 +69,11 @@ namespace gm {
         union { T y, g, t;};
         union { T z, b, p;};
 
-        gm_vec3(T x, T y, T z):x(static_cast<T>(x)),y(static_cast<T>(y)),z(static_cast<T>(z)){}
-        gm_vec3(T x = static_cast<T>(0)):gm_vec3(x,x,x){}
+        gm_vec3(const T x, const T y, const T z):x(static_cast<T>(x)),y(static_cast<T>(y)),z(static_cast<T>(z)){}
         gm_vec3(const gm_vec3<T> &vec):gm_vec3(vec.x, vec.y, vec.z){}
+
+        explicit gm_vec3(const T x = static_cast<T>(0)):gm_vec3(x,x,x){}
+        explicit gm_vec3(const gm_vec2<T> &v, const T z = static_cast<T>(0)):gm_vec3(v.x,v.y,z){}
 
         gm_vec3<T> operator - () const {
             return gm_vec3<T>(

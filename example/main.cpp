@@ -1,6 +1,7 @@
 #include "MainWindow.h"
 #include <QApplication>
 #include <QSurfaceFormat>
+#include "SFLTest.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -15,6 +16,8 @@ int main(int argc, char *argv[])
 
     MainWindow w;
     w.show();
+
+    testMain();
 
     return a.exec();
 }

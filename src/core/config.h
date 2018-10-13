@@ -2,7 +2,7 @@
 #define GMCONFIG_H
 
 #define GM_OUTPUT_WIDTH 0
-#define GM_OUTPUT_PRECISION 0
+#define GM_OUTPUT_PRECISION 2
 
 #if GM_OUTPUT_PRECISION > 0
 #define GM_OUTPUT_POINT showpoint

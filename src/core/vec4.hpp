@@ -75,10 +75,10 @@ namespace gm {
         union { T z, b, p; };
         union { T w, a, q; };
 
-        gm_vec4(T x, T y, T z, T w):x(static_cast<T>(x)),y(static_cast<T>(y)),z(static_cast<T>(z)),w(static_cast<T>(w)){}
-        gm_vec4(T x = static_cast<T>(0)):gm_vec4(x,x,x,x){}
+        gm_vec4(const T x, const T y, const T z, const T w):x(static_cast<T>(x)),y(static_cast<T>(y)),z(static_cast<T>(z)),w(static_cast<T>(w)){}
         gm_vec4(const gm_vec4<T> &v):gm_vec4(v.x, v.y, v.z, v.w){}
 
+        explicit gm_vec4(const T x = static_cast<T>(0)):gm_vec4(x,x,x,x){}
         explicit gm_vec4(const gm_vec3<T> &v, const T w = static_cast<T>(0)):gm_vec4(v.x, v.y, v.z, w){}
 
         gm_vec4<T> operator - () const {            
