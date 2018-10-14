@@ -181,9 +181,60 @@ void testMatrix(){
     }
 }
 
+void testQuaternion(){
+    USE_NAMESPACE
+
+    TEST_BEGIN_TITLE(quaternion)
+    vec3 a(1,0,0);
+    quaternion q0;
+    quaternion q1(a, 90);
+    cout << "Init q0 without param: " << q0 << endl;
+    cout << "Init q1 with vec3(1,0,0) and angle 90: " << q1 << endl;
+
+    cout << "-q1 = " << -q1 << endl;
+
+    q0 = quaternion(0.1,0.1,0.1, 6);
+    cout << "q0 = " << q0 << endl;
+    cout << "q0 + 2.0f = " << q0 + 2.0f << endl;
+    cout << "q0 - 2.0f = " << q0 - 2.0f << endl;
+    cout << "q0 * 2.0f = " << q0 * 2.0f << endl;
+    cout << "q0 / 2.0f = " << q0 / 2.0f << endl;
+    cout << "2.0f + q0 = " << 2.0f + q0 << endl;
+    cout << "2.0f - q0 = " << 2.0f - q0 << endl;
+    cout << "2.0f * q0 = " << 2.0f * q0 << endl;
+    cout << "2.0f / q0 = " << 2.0f / q0 << endl;
+    cout << "q0 += 2.0f, q0 = " << (q0 += 2.0f) << endl;
+    cout << "q0 -= 2.0f, q0 = " << (q0 -= 2.0f) << endl;
+    cout << "q0 *= 2.0f, q0 = " << (q0 *= 2.0f) << endl;
+    cout << "q0 /= 2.0f, q0 = " << (q0 /= 2.0f) << endl;
+
+    cout << "q0 + q1 = " << q0 + q1 << endl;
+    cout << "q0 - q1 = " << q0 - q1 << endl;
+    cout << "q0 * q1 = " << q0 * q1 << endl;
+    cout << "q0 *= q1 = " << (q0 *= q1) << endl;
+
+    vec3 b(0,1,0);
+    q1 = quaternion(a, 90);
+    cout << "reset q1(vec3(1,0,0), 90) = " << q1 << endl;
+    cout << "vec3(0,1,0) * q1 = " << b * q1 << endl;
+    cout << "q1 * vec3(0,1,0) = " << q1 * b << endl;
+    cout << "dot(q1, quaternion(vec3(1,0,0), 45)) = " << dot(q1, quaternion(a, 45)) << endl;
+    cout << "conjugate(q1) = " << conjugate(q1) << endl;
+    cout << "length(q1) = " << length(q1) << endl;
+    cout << "pow(q1, 2.0f)" << pow(q1, 2.0f) << endl;
+    cout << "normalize(q1)" << normalize(q1) << endl;
+    cout << "rotationAngle(q1)" << rotationAngle(q1) << endl;
+    cout << "rotationAxis(q1)" << rotationAxis(q1) << endl;
+    cout << "eulerAngle(q1)" << eulerAngle(q1) << endl;
+    cout << " lerp(q0, q1, 0.3f)" <<  lerp(q0,q1,0.3f) << endl;
+    cout << "nlerp(q0, q1, 0.3f)" << nlerp(q0,q1,0.3f) << endl;
+    cout << "slerp(q0, q1, 0.3f)" << slerp(normalize(q0),normalize(q1),0.3f) << endl;
+}
+
 void testMain(){
     testVector();
     testMatrix();
+    testQuaternison();
 }
 
 #endif // SFLTEST_HPP

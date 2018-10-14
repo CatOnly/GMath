@@ -19,6 +19,7 @@ gm_quaternion<T> operator symbol (const T &value){\
     return v;\
 }
 
+
 #define GM_Q_OPERATOR_SELF_NUM_LEFT(symbol)\
 gm_quaternion<T>& operator symbol (const T &value){\
     x symbol value;\
@@ -42,15 +43,16 @@ namespace gm {
     public:
         T x, y, z, w;
 
+        gm_quaternion():x(static_cast<T>(0)),y(static_cast<T>(0)),z(static_cast<T>(0)),w(static_cast<T>(0)){}
         gm_quaternion(T x, T y, T z, T w):x(static_cast<T>(x)),y(static_cast<T>(y)),z(static_cast<T>(z)),w(static_cast<T>(w)){}
         gm_quaternion(const gm_quaternion<T> &v):gm_quaternion(v.x, v.y, v.z, v.w){}
 
-        explicit gm_quaternion(const gm_vec3<T> axis, const T &theta) {
+        explicit gm_quaternion(gm_vec3<T> axis, const T &theta) {
             if (fabs(1.0f - dot(axis, axis)) > 0.01f) {
                 axis = normalize(axis);
             }
 
-            float thetaHalf = theta * 0.5f;
+            float thetaHalf = float(radians(theta / 2));
             float sinThetaHalf = sin(thetaHalf);
 
             x = axis.x * sinThetaHalf;
@@ -65,12 +67,10 @@ namespace gm {
         GM_Q_OPERATOR_NUM_LEFT(+)
         GM_Q_OPERATOR_NUM_LEFT(-)
         GM_Q_OPERATOR_NUM_LEFT(*)
-        GM_Q_OPERATOR_NUM_LEFT(/)
 
         GM_Q_OPERATOR_SELF_NUM_LEFT(+=)
         GM_Q_OPERATOR_SELF_NUM_LEFT(-=)
         GM_Q_OPERATOR_SELF_NUM_LEFT(*=)
-        GM_Q_OPERATOR_SELF_NUM_LEFT(/=)
 
         gm_quaternion<T> operator - () const {
             return gm_quaternion<T>(
@@ -79,6 +79,27 @@ namespace gm {
                 z == static_cast<T>(0) ? z : -z,
                 w == static_cast<T>(0) ? w : -w
             );        
+        }
+
+        gm_quaternion<T> operator / (const T &value){
+            GM_ASSERT(value != static_cast<T>(0));
+            gm_quaternion<T> v;
+            v.x = x / value;
+            v.y = y / value;
+            v.z = z / value;
+            v.w = w / value;
+
+            return v;
+        }
+
+        gm_quaternion<T>& operator /= (const T &value){
+            GM_ASSERT(value != static_cast<T>(0));
+            x /= value;
+            y /= value;
+            z /= value;
+            w /= value;
+
+            return *this;
         }
 
         gm_quaternion<T> operator * (const gm_quaternion<T> &q){
@@ -108,7 +129,12 @@ namespace gm {
     GM_Q_OPERATOR_NUM_RIGHT(+)
     GM_Q_OPERATOR_NUM_RIGHT(-)
     GM_Q_OPERATOR_NUM_RIGHT(*)
-    GM_Q_OPERATOR_NUM_RIGHT(/)
+
+    template<typename T>
+    gm_quaternion<T> operator / (const T &value, const gm_quaternion<T> &v){
+        GM_ASSERT(v.x != static_cast<T>(0) && v.y != static_cast<T>(0) && v.z != static_cast<T>(0) && v.w != static_cast<T>(0));
+        return gm_quaternion<T>(static_cast<T>(value) / v.x, static_cast<T>(value) / v.y, static_cast<T>(value) / v.z, static_cast<T>(value) / v.w);
+    }
 
     template<typename T>
     gm_vec3<T> operator * (const gm_vec3<T> &v3, const gm_quaternion<T> &q) {
@@ -210,7 +236,7 @@ namespace gm {
     }
 
     template<typename T>
-    gm_quaternion<T> lerp(const gm_quaternion<T> &q0, const gm_quaternion<T> &q1, const float &t) {
+    gm_quaternion<T> lerp(const gm_quaternion<T> &q0, const gm_quaternion<T> &q1, const float t) {
         return gm_quaternion<T>(static_cast<T>(1.0f - t) * q0 + t * q1);
     }
 
@@ -220,7 +246,7 @@ namespace gm {
     }
 
     template<typename T>
-    gm_quaternion<T> slerp(const gm_quaternion<T> &q0, const gm_quaternion<T> q1, const float &t) {
+    gm_quaternion<T> slerp(gm_quaternion<T> q0, gm_quaternion<T> q1, const float &t) {
         
         if (t <= 0.0f) return q0;
         if (t >= 1.0f) return q1;
@@ -246,8 +272,8 @@ namespace gm {
             float sinTheta = sqrt(1.0f - cosTheta*cosTheta);
             float theta = atan2(sinTheta, cosTheta);
             float oneOverSinTheta = 1.0f / sinTheta;
-            k0 = sin((1.0f - t) * sinTheta) * oneOverSinTheta;
-            k1 = sin(t * sinTheta) * oneOverSinTheta;
+            k0 = sin((1.0f - t) * theta) * oneOverSinTheta;
+            k1 = sin(t * theta) * oneOverSinTheta;
         }
 
         return gm_quaternion<T>(static_cast<T>(k0) * q0 + static_cast<T>(k1) * q1);

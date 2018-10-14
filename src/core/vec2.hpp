@@ -92,12 +92,10 @@ namespace gm {
         GM_V2_OPERATOR_BASE(+)
         GM_V2_OPERATOR_BASE(-)
         GM_V2_OPERATOR_BASE(*)
-        GM_V2_OPERATOR_BASE(/)
 
         GM_V2_OPERATOR_SELF(+=)
         GM_V2_OPERATOR_SELF(-=)
         GM_V2_OPERATOR_SELF(*=)
-        GM_V2_OPERATOR_SELF(/=)
 
         GM_V2_OPERATOR_SELF_LAST(++)
         GM_V2_OPERATOR_SELF_LAST(--)
@@ -107,18 +105,51 @@ namespace gm {
         GM_V2_OPERATOR_NUM_RIGHT(+)
         GM_V2_OPERATOR_NUM_RIGHT(-)
         GM_V2_OPERATOR_NUM_RIGHT(*)
-        GM_V2_OPERATOR_NUM_RIGHT(/)
 
         GM_V2_OPERATOR_SELF_NUM_RIGHT(+=)
         GM_V2_OPERATOR_SELF_NUM_RIGHT(-=)
         GM_V2_OPERATOR_SELF_NUM_RIGHT(*=)
-        GM_V2_OPERATOR_SELF_NUM_RIGHT(/=)
+
+        gm_vec2<T> operator / (const gm_vec2<T> &v) const {
+            GM_ASSERT(v.x != static_cast<T>(0) && v.y != static_cast<T>(0));
+            return gm_vec2<T>(x / v.x, y / v.y);
+        }
+
+        gm_vec2<T>& operator /= (const gm_vec2<T> &v){
+            GM_ASSERT(v.x != static_cast<T>(0) && v.y != static_cast<T>(0));
+            x /= v.x;
+            y /= v.y;
+
+            return *this;
+        }
+
+        gm_vec2<T> operator / (const T &value) const {
+            GM_ASSERT(value != static_cast<T>(0));
+            gm_vec2<T> v;
+            v.x = x / value;
+            v.y = y / value;
+
+            return v;
+        }
+
+        gm_vec2<T>& operator /= (const T &value){
+            GM_ASSERT(value != static_cast<T>(0));
+            x /= value;
+            y /= value;
+
+            return *this;
+        }
     };
 
     GM_V2_OPERATOR_NUM_LEFT(+)
     GM_V2_OPERATOR_NUM_LEFT(-)
     GM_V2_OPERATOR_NUM_LEFT(*)
-    GM_V2_OPERATOR_NUM_LEFT(/)
+
+    template<typename T>
+    gm_vec2<T> operator / (const T &value, const gm_vec2<T> &v){
+        GM_ASSERT(v.x != static_cast<T>(0) && v.y != static_cast<T>(0));
+        return gm_vec2<T>(value / v.x, value / v.y);
+    }
 
     template<typename T>
     std::ostream& operator << (std::ostream &os, const gm_vec2<T> &v){
@@ -129,6 +160,11 @@ namespace gm {
            <<"(" << v.x << ", " << v.y << ") ";
 
         return os;
+    }
+
+    template<typename T>
+    T dot(const gm_vec2<T> &vL, const gm_vec2<T> &vR) {
+        return vL.x * vR.x + vL.y * vR.y;
     }
 
     template<typename T>
@@ -151,11 +187,6 @@ namespace gm {
         GM_ASSERT(isNoZero);
 
         return isNoZero ? gm_vec2<T>(v.x/avg, v.y/avg) : gm_vec2<T>();
-    }
-
-    template<typename T>
-    T dot(const gm_vec2<T> &vL, const gm_vec2<T> &vR) {
-        return vL.x * vR.x + vL.y * vR.y;
     }
 }
 

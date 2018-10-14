@@ -1,8 +1,8 @@
 <h1 align="center">GMath</h1>
 
 <p align="center">
-    <img src="https://img.shields.io/badge/version-0.2.3-blue.svg" alt="Version"/>
-    <img src="https://img.shields.io/badge/test%20cover-60%25-brightgreen.svg" alt="Test Cover"/>
+    <img src="https://img.shields.io/badge/version-0.3-blue.svg" alt="Version"/>
+    <img src="https://img.shields.io/badge/test%20cover-92%25-brightgreen.svg" alt="Test Cover"/>
     <img src="https://img.shields.io/github/license/mashape/apistatus.svg?style=style-flat-green" alt="LICENSE"/>
     <img src="https://img.shields.io/badge/platform-iOS%20%7C%20Android%20%7C%20Linux%20%7C%20OS%20X%20%7C%20Win-red.svg" alt="platform"/>
 </p>
