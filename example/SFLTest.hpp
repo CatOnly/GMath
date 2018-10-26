@@ -234,7 +234,7 @@ void testQuaternion(){
 void testMain(){
     testVector();
     testMatrix();
-    testQuaternison();
+    testQuaternion();
 }
 
 #endif // SFLTEST_HPP
