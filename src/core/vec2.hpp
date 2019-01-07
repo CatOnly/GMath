@@ -139,6 +139,10 @@ namespace gm {
 
             return *this;
         }
+
+        bool isValueEqual(const gm_vec2<T>& v){
+            return (v.x == x && v.y == y);
+        }
     };
 
     GM_V2_OPERATOR_NUM_LEFT(+)

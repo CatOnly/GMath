@@ -138,6 +138,10 @@ namespace gm {
 
             return *this;
         }
+
+        bool isValueEqual(const gm_vec3<T>& v){
+            return (v.x == x && v.y == y && v.z == z);
+        }
     };
 
     GM_V3_OPERATOR_NUM_LEFT(+)

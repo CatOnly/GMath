@@ -231,10 +231,27 @@ void testQuaternion(){
     cout << "slerp(q0, q1, 0.3f)" << slerp(normalize(q0),normalize(q1),0.3f) << endl;
 }
 
+void testOtherFunctions(){
+    USE_NAMESPACE
+
+    TEST_BEGIN_TITLE(other_function)
+
+    vec2 a2, b2, c2(1.0);
+    vec3 a3, b3, c3(1.0);
+    vec4 a4, b4, c4(1.0);
+    cout << "vec2 a" << a2 << "is equal vec2 b" << b2 << a2.isValueEqual(b2) << endl;
+    cout << "vec2 a" << a2 << "is equal vec2 c" << c2 << a2.isValueEqual(c2) << endl;
+    cout << "vec3 a" << a3 << "is equal vec3 b" << b3 << a3.isValueEqual(b3) << endl;
+    cout << "vec3 a" << a3 << "is equal vec3 c" << c3 << a3.isValueEqual(c3) << endl;
+    cout << "vec4 a" << a4 << "is equal vec4 b" << b4 << a4.isValueEqual(b4) << endl;
+    cout << "vec4 a" << a4 << "is equal vec4 c" << c4 << a4.isValueEqual(c4) << endl;
+}
+
 void testMain(){
     testVector();
     testMatrix();
     testQuaternion();
+    testOtherFunctions();
 }
 
 #endif // SFLTEST_HPP
