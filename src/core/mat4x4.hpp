@@ -89,7 +89,7 @@ namespace gm {
         using namespace std;
         os << setprecision(GM_OUTPUT_PRECISION)
            << setw(GM_OUTPUT_WIDTH)
-           << GM_OUTPUT_POINT;
+           << GM_OUTPUT_POINT_CMD << GM_OUTPUT_FIXED_CMD;
 
         for (int i = 0; i < 4; ++i) {
             os << m[0][i] << " "
