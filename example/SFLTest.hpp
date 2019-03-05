@@ -130,7 +130,9 @@ void testVector(){
     cout << "transport(a) = \n" << transport(a) << endl;\
     cout << "a = \n" << a << endl;\
     cout << "a * v = \n" << a * v << endl;\
-    cout << "v * a = \n" << v * a << endl;
+    cout << "v * a = \n" << v * a << endl;\
+    cout << "a * inverse(a) = \n" << a * gm::inverse(a) << endl;
+
 
 #define TEST_MAT(type) {\
     TEST_INIT(type,"\n")\
@@ -145,7 +147,7 @@ void testMatrix(){
     TEST_BEGIN_TITLE(mat2)
     {
         mat2 a(1,2,3,4);
-        cout << "mat2(1,2,\n3,4) = \n" << a << endl;
+        cout << "mat2(1,2,3,4) = \n" << a << endl;
     }
     TEST_MAT(mat2);
     {

@@ -64,6 +64,8 @@ public:
         transform = gm::rotate(transform, _rotateAngle.z, gm::vec3(0.0, 0.0, 1.0));
         transform = gm::scale(transform, _scale);
         transform = gm::translate(transform, _move);
+        // test for inverse function
+        transform = gm::inverse(transform) * transform * transform;
         transform = gm::perspective(_viewAngle, 1.0f, _viewFront, _viewFarther) * _delegateCamaera->viewMatrix() * transform;
         glUniformMatrix4fv(glGetUniformLocation(_programID, "transform"), 1, GL_FALSE, gm::valuePtrFrom(transform));
 
