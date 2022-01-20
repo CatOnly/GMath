@@ -1,5 +1,5 @@
-#ifndef CM_COLOR_H
-#define CM_COLOR_H
+#ifndef GM_COLOR_H
+#define GM_COLOR_H
 
 #include "vec4.hpp"
 
@@ -33,4 +33,4 @@ namespace gm {
 
 }
 
-#endif // CM_COLOR_H
+#endif // GM_COLOR_H

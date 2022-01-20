@@ -48,11 +48,11 @@ Todo list:
    #include "GMath.hpp"
    
    void main(){
-       gm::vec3 axisX(2, 0, 0);
-       gm::vec3 axisY(0, 1, 2);
-       gm::vec3 axisZ(1, 0, 0.5);
-       gm::mat3 unitM3;
-       gm::mat3 coordinateM3(
+       gm::Vec3 axisX(2, 0, 0);
+       gm::Vec3 axisY(0, 1, 2);
+       gm::Vec3 axisZ(1, 0, 0.5);
+       gm::Mat3 unitM3;
+       gm::Mat3 coordinateM3(
            axisX * 0.5,
            3.0f * axisY,
            -axisZ
@@ -71,7 +71,7 @@ Todo list:
 
 Like *GLSL*:
 
--  `vec3.x, vec3.r, vec3.s` is the same data in memory.
+-  `Vec3.x, Vec3.r, Vec3.s` is the same data in memory.
 
 - number * vector = vector * number = number multiplied by every element(x, y, z) in the vector.
 
@@ -93,5 +93,5 @@ To know how to use *GMath* in the project. Look at [SFLCameraVirtual.h](https://
 
 ## License
 
-The source code is licensed under GPL v3, License is available [here](../LICENSE).
+The source code is licensed under GPL v3, License is available [here](https://github.com/CatOnly/Archive-files/blob/master/LICENSE).
 
