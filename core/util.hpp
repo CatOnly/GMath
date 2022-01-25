@@ -31,6 +31,14 @@
 #define GM_FRACT(x) ((x) - int(x))
 #endif
 
+#ifndef GM_REPEAT
+#define GM_REPEAT(x) ((x) > 0 ? GM_FRACT(x) : 1.0 - (int(x) - (x)))
+#endif
+
+#ifndef GM_REPEAT_MIRROR
+#define GM_REPEAT_MIRROR(x) ((x) > 0 ? 1.0 - ((x) - int(x)) : int(x) - (x))
+#endif
+
 #ifndef GM_RADIANS
 #define GM_RADIANS(x) ((x) * gm::ANGLE_TO_RADIAN)
 #endif
