@@ -35,15 +35,6 @@
 
 namespace gm {
 
-	const static gm_vec2<float> ZERO_V2(0.0f, 0.0f);
-	const static gm_vec2<float> AXIS_V2_X(1.0f, 0.0f);
-	const static gm_vec2<float> AXIS_V2_Y(0.0f, 1.0f);
-
-	const static gm_vec3<float> ZERO_V3(0.0f, 0.0f, 0.0f);
-	const static gm_vec3<float> AXIS_V3_X(1.0f, 0.0f, 0.0f);
-	const static gm_vec3<float> AXIS_V3_Y(0.0f, 1.0f, 0.0f);
-	const static gm_vec3<float> AXIS_V3_Z(0.0f, 0.0f, 1.0f);
-
     typedef gm_vec2<int> Size;
     typedef gm_vec3<int> Face;
     typedef gm_vec4<int> Viewport;

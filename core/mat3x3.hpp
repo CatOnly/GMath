@@ -192,4 +192,6 @@ namespace gm {
     }
 }
 
+#include "mat3x3.inl"
+
 #endif // GM_MAT3X3_H

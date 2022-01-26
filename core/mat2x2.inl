@@ -4,7 +4,7 @@
 namespace gm {
     
     template<typename T>
-    gm_mat2::gm_mat2(const gm_mat3<T> &m)
+    gm_mat2<T>::gm_mat2(const gm_mat3<T> &m)
     {
         _column[0][0] = m[0][0];
         _column[0][1] = m[0][1];

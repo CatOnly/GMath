@@ -145,4 +145,6 @@ namespace gm {
     }
 }
 
+#include "mat2x2.inl"
+
 #endif // GM_MAT2X2_H
