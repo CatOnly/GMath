@@ -45,6 +45,80 @@ namespace gm {
         explicit gm_mat3(const gm_vec3<T> &vector3):gm_mat3(vector3.x, vector3.y, vector3.z){}
         explicit gm_mat3(const T value = static_cast<T>(1)):gm_mat3(value, value, value){}
 
+		gm_mat3<T>& zero()
+		{
+			std::memset(&(_column[0][0]), 0, sizeof(T) * 9);
+
+			return *this;
+		}
+		gm_mat3<T>& unit()
+		{
+			zero();
+			_column[0][0] = 1.0f;
+			_column[1][1] = 1.0f;
+			_column[2][2] = 1.0f;
+
+			return *this;
+		}
+
+		gm_mat3<T>& scale(const gm_vec2<T> &v) {
+			_column[0] *= v.x;
+			_column[1] *= v.y;
+
+			return *this;
+		}
+
+		gm_mat3<T>& rotate(const float& x, const float& y) {
+			_column[0] *= v.x;
+			_column[1] *= v.y;
+
+			return *this;
+		}
+
+		gm_mat3<T>& translate(const gm_vec2<T> &v) {
+			_column[2] += _column[0] * v.x + _column[1] * v.y£»
+			return *this;
+		}
+
+		gm_vec3<T> row(int index) const {
+			return gm_vec3<T>(_column[0][index], _column[1][index], _column[2][index]);
+		}
+
+		gm_mat3<T> transpose() const {
+			return gm_mat3<T>(
+				row(0),
+				row(1),
+				row(2)
+			);
+		}
+
+		gm_mat3<T> inverseTranspose() const
+		{
+			T Determinant =
+				+ _column[0][0] * (_column[1][1] * _column[2][2] - _column[1][2] * _column[2][1])
+				- _column[0][1] * (_column[1][0] * _column[2][2] - _column[1][2] * _column[2][0])
+				+ _column[0][2] * (_column[1][0] * _column[2][1] - _column[1][1] * _column[2][0]);
+
+			gm_mat3<T> Inverse;
+			Inverse[0][0] = +(_column[1][1] * _column[2][2] - _column[2][1] * _column[1][2]);
+			Inverse[0][1] = -(_column[1][0] * _column[2][2] - _column[2][0] * _column[1][2]);
+			Inverse[0][2] = +(_column[1][0] * _column[2][1] - _column[2][0] * _column[1][1]);
+			Inverse[1][0] = -(_column[0][1] * _column[2][2] - _column[2][1] * _column[0][2]);
+			Inverse[1][1] = +(_column[0][0] * _column[2][2] - _column[2][0] * _column[0][2]);
+			Inverse[1][2] = -(_column[0][0] * _column[2][1] - _column[2][0] * _column[0][1]);
+			Inverse[2][0] = +(_column[0][1] * _column[1][2] - _column[1][1] * _column[0][2]);
+			Inverse[2][1] = -(_column[0][0] * _column[1][2] - _column[1][0] * _column[0][2]);
+			Inverse[2][2] = +(_column[0][0] * _column[1][1] - _column[1][0] * _column[0][1]);
+
+			for (int i = 0; i < 3; ++i) {
+				for (int j = 0; j < 3; ++j) {
+					Inverse[i][j] /= Determinant;
+				}
+			}
+
+			return Inverse;
+		}
+
         gm_mat3<T> operator - () const {
             return gm_mat3<T>(
                 -_column[0],
@@ -70,20 +144,6 @@ namespace gm {
         GM_MAT_OPERATOR_SELF_NUM_LEFT(3, -=)
         GM_MAT_OPERATOR_SELF_NUM_LEFT(3, *=)
         GM_MAT_OPERATOR_SELF_NUM_LEFT(3, /=)
-
-        gm_mat3<T>& zero()
-        {
-            std::memset(&(_column[0][0]), 0, sizeof(T) * 9);
-            return *this;
-        }
-        gm_mat3<T>& identity()
-        {
-            zero();
-            _column[0][0] = 1.0f;
-            _column[1][1] = 1.0f;
-            _column[2][2] = 1.0f;
-            return *this;
-        }
     };
 
     GM_MAT_OPERATOR_NUM_RIGHT(3, +)
@@ -108,47 +168,6 @@ namespace gm {
         }
 
         return os;
-    }
-
-    template<typename T>
-    gm_mat3<T> transpose(const gm_mat3<T> &m) {
-        return gm_mat3<T>(
-            row(m, 0), 
-            row(m, 1), 
-            row(m, 2)
-        );
-    }
-
-    	template<typename T>
-	gm_mat3<T> inverseTranspose(const gm_mat3<T>& m)
-	{
-		T Determinant =
-			+ m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1])
-			- m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0])
-			+ m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);
-
-		gm_mat3<T> Inverse;
-		Inverse[0][0] = +(m[1][1] * m[2][2] - m[2][1] * m[1][2]);
-		Inverse[0][1] = -(m[1][0] * m[2][2] - m[2][0] * m[1][2]);
-		Inverse[0][2] = +(m[1][0] * m[2][1] - m[2][0] * m[1][1]);
-		Inverse[1][0] = -(m[0][1] * m[2][2] - m[2][1] * m[0][2]);
-		Inverse[1][1] = +(m[0][0] * m[2][2] - m[2][0] * m[0][2]);
-		Inverse[1][2] = -(m[0][0] * m[2][1] - m[2][0] * m[0][1]);
-		Inverse[2][0] = +(m[0][1] * m[1][2] - m[1][1] * m[0][2]);
-		Inverse[2][1] = -(m[0][0] * m[1][2] - m[1][0] * m[0][2]);
-		Inverse[2][2] = +(m[0][0] * m[1][1] - m[1][0] * m[0][1]);
-		for (int i = 0; i < 3; ++i) {
-			for (int j = 0; j < 3; ++j) {
-				Inverse[i][j] /= Determinant;
-			}
-		}
-
-		return Inverse;
-	}
-
-    template<typename T>
-    gm_vec3<T> row(gm_mat3<T> mat, int index) {
-        return gm_vec3<T>(mat[0][index], mat[1][index], mat[2][index]);
     }
 
     // -- vector * matrix --------------

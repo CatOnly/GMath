@@ -1,9 +1,6 @@
 #ifndef GM_GEOMETRIC_H
 #define GM_GEOMETRIC_H
 
-#include "vec4.hpp"
-#include "quaternion.hpp"
-
 #include "mat2x2.hpp"
 #include "mat3x3.hpp"
 #include "mat4x4.hpp"
@@ -124,32 +121,5 @@ namespace gm {
         return Inverse;
     }
     
-    template<typename T>
-    gm_mat4<T> mat4_from(gm_quaternion<T> q) {
-        gm_mat4<T> m(1);
-        float xx = q.x * q.x;
-        float xy = q.x * q.y;
-        float xz = q.x * q.z;
-        float xw = q.x * q.w;
-        float yy = q.y * q.y;
-        float yz = q.y * q.z;
-        float yw = q.y * q.w;
-        float zz = q.z * q.z;
-        float zw = q.z * q.w;
-
-        m[0][0] = 1 - 2 * (yy + zz);
-        m[0][1] = 2 * (xy - zw);
-        m[0][2] = 2 * (xz + yw);
-
-        m[1][0] = 2 * (xy + zw);
-        m[1][1] = 1 - 2 * (xx + zz);
-        m[1][2] = 2 * (yz - xw);
-
-        m[2][0] = 2 * (xz - yw);
-        m[2][1] = 2 * (yz + xw);
-        m[2][2] = 1 - 2 * (xx + yy);
-
-        return m;
-    }
 }
 #endif // GM_GEOMETRIC_H

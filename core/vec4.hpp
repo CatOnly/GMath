@@ -81,6 +81,31 @@ namespace gm {
         explicit gm_vec4(const T x = static_cast<T>(0)):gm_vec4(x,x,x,x){}
         explicit gm_vec4(const gm_vec3<T> &v, const T w = static_cast<T>(0)):gm_vec4(v.x, v.y, v.z, w){}
 
+        T dot(const gm_vec4<T> &v) const {
+            return x * v.x + y * v.y + z * v.z + w * v.w;
+        }
+
+        T length() const {
+            return sqrt(x * x + y * y + z * z + w * w);
+        }
+
+        gm_vec4<T> normalize() const {
+            T avg = length();
+            bool isNoZero = avg != static_cast<T>(0);
+            GM_ASSERT(isNoZero);
+
+            return isNoZero ? gm_vec4<T>(x/avg, y/avg, z/avg, w/avg) : gm_vec4<T>();
+        }
+
+        T distance(const gm_vec4<T> &vTo) const {
+            T disX = vTo.x - x;
+            T disY = vTo.y - y;
+            T disZ = vTo.z - z;
+            T disW = vTo.w - w;
+
+            return static_cast<T>(sqrt(disX*disX +  disY*disY + disZ*disZ + disW*disW));
+        }
+
         gm_vec4<T> operator - () const {            
             return gm_vec4<T>(
                 x == static_cast<T>(0) ? x : -x, 
@@ -175,34 +200,6 @@ namespace gm {
         return os;
     }
 
-    template<typename T>
-    T dot(const gm_vec4<T> &vL, const gm_vec4<T> &vR) {
-        return vL.x * vR.x + vL.y * vR.y + vL.z * vR.z + vL.w * vR.w;
-    }
-
-    template<typename T>
-    T length(const gm_vec4<T> &v){
-        return sqrt(v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w);
-    }
-
-    template<typename T>
-    T distance(const gm_vec4<T> &vFrom, const gm_vec4<T> &vTo) {
-        T disX = vTo.x - vFrom.x;
-        T disY = vTo.y - vFrom.y;
-        T disZ = vTo.z - vFrom.z;
-        T disW = vTo.w - vFrom.w;
-
-        return static_cast<T>(sqrt(disX*disX +  disY*disY + disZ*disZ + disW*disW));\
-    }
-
-    template<typename T>
-    gm_vec4<T> normalize(const gm_vec4<T> &v) {
-        T avg = length(v);
-        bool isNoZero = avg != static_cast<T>(0);
-        GM_ASSERT(isNoZero);
-
-        return isNoZero ? gm_vec4<T>(v.x/avg, v.y/avg, v.z/avg, v.w/avg) : gm_vec4<T>();
-    }
-}
+} // namespace gm
 
 #endif // GM_VEC4_H

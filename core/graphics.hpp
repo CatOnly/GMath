@@ -5,6 +5,21 @@
 
 namespace gm {
 
+	template <typename T>
+	gm_vec3<T> reflect(const gm_vec3<T>& I, const gm_vec3<T>& N) {
+		return I - T(2) * N.dot(I) * N;
+	}
+
+	template <typename T>
+	T refract(const gm_vec3<T>& I, const gm_vec3<T>& N, const T& eta) {
+		T dotValue = N.dot(I);
+		T k = T(1) - eta * eta * (T(1) - dotValue * dotValue);
+		if (k < T(0))
+			return T(0);
+		else
+			return eta * I - (eta * dotValue + sqrt(k)) * N;
+	}
+
     // For aces filmic tone mapping curve, see
     // https://knarkowicz.wordpress.com/2016/01/06/aces-filmic-tone-mapping-curve/
     inline float aces(float value) {
@@ -48,7 +63,7 @@ namespace gm {
             s[i][2] = p1[i] -  p[i];
         }
 
-        gm_vec3<T> u = cross(s[0], s[1]);
+        gm_vec3<T> u = s[0].cross(s[1]);
         if (GM_ABS(u.z) == 0) return gm_vec3<T>(-1, 1, 1);
 
         return gm_vec3<T>(1.f - (u.x + u.y) / u.z, u.x / u.z, u.y / u.z);
@@ -64,9 +79,9 @@ namespace gm {
     */
     template<typename T>
     gm_mat4<T> lookAt(const gm_vec3<T> &v3PosEye, const gm_vec3<T> &v3PosTarget, const gm_vec3<T> &v3Up) {
-        gm_vec3<T> v3EyeNegDir = normalize(v3PosEye - v3PosTarget);
-        gm_vec3<T> v3EyeNegRight = normalize(cross(v3Up, v3EyeNegDir));
-        gm_vec3<T> v3EyeUp = normalize(cross(v3EyeNegDir, v3EyeNegRight));
+        gm_vec3<T> v3EyeNegDir = (v3PosEye - v3PosTarget).normalize();
+        gm_vec3<T> v3EyeNegRight = v3Up.cross(v3EyeNegDir).normalize();
+        gm_vec3<T> v3EyeUp = v3EyeNegDir.cross(v3EyeNegRight).normalize();
 
         gm_mat4<T> m4;
         m4[0][0] = v3EyeNegRight.x;
@@ -78,9 +93,9 @@ namespace gm {
         m4[0][2] = v3EyeNegDir.x;
         m4[1][2] = v3EyeNegDir.y;
         m4[2][2] = v3EyeNegDir.z;
-        m4[3][0] = dot(v3EyeNegRight, -v3PosEye);
-        m4[3][1] = dot(v3EyeUp, -v3PosEye);
-        m4[3][2] = dot(v3EyeNegDir, -v3PosEye);
+        m4[3][0] = v3EyeNegRight.dot(-v3PosEye);
+        m4[3][1] = v3EyeUp.dot(-v3PosEye);
+        m4[3][2] = v3EyeNegDir.dot(-v3PosEye);
 
         return m4;
     }

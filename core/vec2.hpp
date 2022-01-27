@@ -1,10 +1,7 @@
 #ifndef GM_VEC2_H
 #define GM_VEC2_H
 
-#include <iostream>
-#include <iomanip>
-
-#include "util.hpp"
+#include "common.hpp"
 
 #define GM_VEC_OPERATOR_INDEX(size)\
 T & operator[](int i) { \
@@ -78,6 +75,29 @@ namespace gm {
         gm_vec2(const T x, const T y):x(static_cast<T>(x)),y(static_cast<T>(y)){}
         gm_vec2(const T x = static_cast<T>(0)):gm_vec2(x,x){}
         gm_vec2(const gm_vec2<T> &vec):gm_vec2(vec.x, vec.y){}
+
+        T dot(const gm_vec2<T> &v) const {
+            return x * v.x + y * v.y;
+        }
+
+        T length() const {
+            return sqrt(x * x + y * y);
+        }
+
+        T distance(const gm_vec2<T> &vTo) const {
+            T disX = vTo.x - x;
+            T disY = vTo.y - y;
+
+            return static_cast<T>(sqrt(disX*disX +  disY*disY));
+        }
+
+		gm_vec2<T> normalize() const {
+			T avg = length();
+			bool isNoZero = avg != static_cast<T>(0);
+			GM_ASSERT(isNoZero);
+
+			return isNoZero ? gm_vec2<T>(x / avg, y / avg) : gm_vec2<T>();
+		}
 
         gm_vec2<T> operator - () const {
             return gm_vec2<T>(
@@ -165,32 +185,6 @@ namespace gm {
         return os;
     }
 
-    template<typename T>
-    T dot(const gm_vec2<T> &vL, const gm_vec2<T> &vR) {
-        return vL.x * vR.x + vL.y * vR.y;
-    }
-
-    template<typename T>
-    T length(const gm_vec2<T> &v){
-        return sqrt(v.x * v.x + v.y * v.y);
-    }
-
-    template<typename T>
-    T distance(const gm_vec2<T> &vFrom, const gm_vec2<T> &vTo) {
-        T disX = vTo.x - vFrom.x;
-        T disY = vTo.y - vFrom.y;
-
-        return static_cast<T>(sqrt(disX*disX +  disY*disY));\
-    }
-
-    template<typename T>
-    gm_vec2<T> normalize(const gm_vec2<T> &v) {
-        T avg = length(v);
-        bool isNoZero = avg != static_cast<T>(0);
-        GM_ASSERT(isNoZero);
-
-        return isNoZero ? gm_vec2<T>(v.x/avg, v.y/avg) : gm_vec2<T>();
-    }
-}
+} // namespace gm
 
 #endif // GM_VEC2_H

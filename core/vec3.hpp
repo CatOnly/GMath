@@ -65,15 +65,47 @@ namespace gm {
     template <typename T> class gm_vec3
     {
     public:
-        union { T x, r, s;};
-        union { T y, g, t;};
-        union { T z, b, p;};
+        union { T x, r, s, roll;  };
+        union { T y, g, t, yaw;   };
+        union { T z, b, p, pitch; };
 
         gm_vec3(const T x, const T y, const T z):x(static_cast<T>(x)),y(static_cast<T>(y)),z(static_cast<T>(z)){}
         gm_vec3(const gm_vec3<T> &vec):gm_vec3(vec.x, vec.y, vec.z){}
 
         explicit gm_vec3(const T x = static_cast<T>(0)):gm_vec3(x,x,x){}
         explicit gm_vec3(const gm_vec2<T> &v, const T z = static_cast<T>(0)):gm_vec3(v.x,v.y,z){}
+
+        T dot(const gm_vec3<T> &v) const {
+            return x * v.x + y * v.y + z * v.z;
+        }
+
+        gm_vec3<T> cross(const gm_vec3<T> &v) const {
+            return gm_vec3<T>(
+                y * v.z - z * v.y,
+                z * v.x - x * v.z,
+                x * v.y - y * v.x
+            );
+        }
+
+        T length() const {
+            return sqrt(x * x + y * y + z * z);
+        }
+
+        gm_vec3<T> normalize() const {
+            T avg = length();
+            bool isNoZero = avg != static_cast<T>(0);
+            GM_ASSERT(isNoZero);
+
+            return isNoZero ? gm_vec3<T>(x/avg, y/avg, z/avg) : gm_vec3<T>();
+        }
+
+        T distance(const gm_vec3<T> &vTo) const {
+            T disX = vTo.x - x;
+            T disY = vTo.y - y;
+            T disZ = vTo.z - z;
+
+            return static_cast<T>(sqrt(disX*disX +  disY*disY + disZ*disZ));
+        }
 
         gm_vec3<T> operator - () const {
             return gm_vec3<T>(
@@ -165,42 +197,6 @@ namespace gm {
         return os;
     }
 
-    template<typename T>
-    T dot(const gm_vec3<T> &vL, const gm_vec3<T> &vR) {
-        return vL.x * vR.x + vL.y * vR.y + vL.z * vR.z;
-    }
-
-    template<typename T>
-    gm_vec3<T> cross(const gm_vec3<T> &vL, const gm_vec3<T> &vR) {
-        return gm_vec3<T>(
-            vL.y * vR.z - vL.z * vR.y,
-            vL.z * vR.x - vL.x * vR.z,
-            vL.x * vR.y - vL.y * vR.x
-        );
-    }
-
-    template<typename T>
-    T length(const gm_vec3<T> &v){
-        return sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
-    }
-
-    template<typename T>
-    T distance(const gm_vec3<T> &vFrom, const gm_vec3<T> &vTo) {
-        T disX = vTo.x - vFrom.x;
-        T disY = vTo.y - vFrom.y;
-        T disZ = vTo.z - vFrom.z;
-
-        return static_cast<T>(sqrt(disX*disX +  disY*disY + disZ*disZ));\
-    }
-
-    template<typename T>
-    gm_vec3<T> normalize(const gm_vec3<T> &v) {
-        T avg = length(v);
-        bool isNoZero = avg != static_cast<T>(0);
-        GM_ASSERT(isNoZero);
-
-        return isNoZero ? gm_vec3<T>(v.x/avg, v.y/avg, v.z/avg) : gm_vec3<T>();
-    }
-}
+} // namespace gm
 
 #endif // GM_VEC3_H

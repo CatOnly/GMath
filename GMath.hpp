@@ -28,10 +28,11 @@
 #define GM_OUTPUT_FIXED_CMD ""
 #endif
 
-#include "core/graphics.hpp"
-#include "core/transform.hpp"
-#include "core/geometric.hpp"
 #include "core/color.hpp"
+#include "core/graphics.hpp"
+#include "core/geometric.hpp"
+#include "core/transform2D.hpp"
+#include "core/transform3D.hpp"
 
 namespace gm {
 

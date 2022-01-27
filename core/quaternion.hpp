@@ -2,6 +2,7 @@
 #define GM_QUATERNION_H
 
 #include "vec3.hpp"
+#include "mat3x3.hpp"
 
 #define GM_Q_OPERATOR_BASE(symbol) \
 gm_quaternion<T> operator symbol (const gm_quaternion<T> &a){\
@@ -38,13 +39,26 @@ gm_quaternion<T> operator symbol (const T &value, const gm_quaternion<T> &v){\
 
 namespace gm {
 
+    template<typename T> class gm_mat4;
     template <typename T> class gm_quaternion
     {
     public:
         T x, y, z, w;
 
-        gm_quaternion():x(static_cast<T>(0)),y(static_cast<T>(0)),z(static_cast<T>(0)),w(static_cast<T>(0)){}
+        gm_quaternion():x(static_cast<T>(0)),y(static_cast<T>(0)),z(static_cast<T>(0)),w(static_cast<T>(1)){}
         gm_quaternion(T x, T y, T z, T w):x(static_cast<T>(x)),y(static_cast<T>(y)),z(static_cast<T>(z)),w(static_cast<T>(w)){}
+        gm_quaternion(const T& pitch, const T& yaw, const T& roll) 
+        {
+            gm_vec3<T> eulerAngle(pitch * T(0.5), yaw * T(0.5), roll * T(0.5));
+            gm_vec3<T> c = gm::cos(eulerAngle * T(0.5));
+            gm_vec3<T> s = gm::sin(eulerAngle * T(0.5));
+            
+            this->w = c.x * c.y * c.z + s.x * s.y * s.z;
+            this->x = s.x * c.y * c.z - c.x * s.y * s.z;
+            this->y = c.x * s.y * c.z + s.x * c.y * s.z;
+            this->z = c.x * c.y * s.z - s.x * s.y * c.z;
+        }
+        
         gm_quaternion(const gm_quaternion<T> &v):gm_quaternion(v.x, v.y, v.z, v.w){}
 
         explicit gm_quaternion(gm_vec3<T> axis, const T &theta) {
@@ -60,6 +74,88 @@ namespace gm {
             z = axis.z * sinThetaHalf;
             w = cos(thetaHalf);
         }
+
+        explicit gm_quaternion(const gm_mat3<T>& m);
+		explicit gm_quaternion(const gm_mat4<T>& m);
+
+        T length(const gm_quaternion<T> &q) const {
+            return std::sqrt(dot(q));
+        }
+
+        gm_quaternion<T> normalize() const {
+            T avg = length();
+            bool isNoZero = avg != static_cast<T>(0);
+            GM_ASSERT(isNoZero);
+
+            return isNoZero ? gm_quaternion<T>(x/avg, y/avg, z/avg, w/avg) : gm_quaternion<T>();
+        }
+
+        gm_quaternion<T> normalize(const gm_quaternion<T> &q) const {
+            T len = length(q);
+            if(len <= T(0)) return gm_quaternion<T>(1, 0, 0, 0);
+
+            T oneOverLen = T(1) / len;
+            return gm_quaternion<T>(q.w * oneOverLen, q.x * oneOverLen, q.y * oneOverLen, q.z * oneOverLen);
+        }
+
+        T dot(const gm_quaternion<T> &v) const {
+            return x * v.x + y * v.y + z * v.z + w * v.w;
+        }
+
+        gm_quaternion<T> cross(const gm_quaternion<T> &v) const {
+            return gm_quaternion<T>(
+                w * q.w - x * q.x - y * q.y - z * q.z,
+                w * q.x + x * q.w + y * q.z - z * q.y,
+                w * q.y + y * q.w + z * q.x - x * q.z,
+                w * q.z + z * q.w + x * q.y - y * q.x
+            );
+        }
+
+        gm_quaternion<T> conjugate() const {
+            return gm_quaternion<T>(w, -x, -y, -z);
+        }
+
+        gm_quaternion<T> inverse() const {
+            return conjugate() / dot(*this);
+        }
+
+        gm_quaternion<T> rotate(const gm_vec3<T> v, T angle) const {
+            gm_vec3<T> Tmp = v;
+
+            // Axis of rotation must be normalised
+            T len = Tmp.length();
+            if(GM_ABS(len - T(1)) > T(gm::EPS))
+            {
+                T oneOverLen = T(1) / len;
+                Tmp.x *= oneOverLen;
+                Tmp.y *= oneOverLen;
+                Tmp.z *= oneOverLen;
+            }
+
+            T AngleRad = GM_RADIANS(angle);
+            T fSin = std::sin(AngleRad * T(0.5));
+
+            return q * gm_quaternion<T>(std::cos(AngleRad * T(0.5)), Tmp.x * fSin, Tmp.y * fSin, Tmp.z * fSin);
+        }
+
+        gm_vec3<T> euler() const {
+            T h;
+            T p = gm::asin(-2.0f * (y * z + w * x));
+            T r = T(0);
+
+            T cosP = std::cos(p);
+            if (cosP != T(0)) {
+                h = std::atan2(x * z - w * y, 0.5f - x * x - y * y);
+                r = std::atan2(x * y - w * z, 0.5f - x * x - z * z);
+            } else {
+                h = std::atan2(-x * z - w * y, 0.5f - y * y - z * z);
+            }
+            
+            return gm_vec3<T>(h, p, r);
+        }
+
+        gm_mat4<T> mat3() const;
+        gm_mat4<T> mat4() const;
 
         GM_Q_OPERATOR_BASE(+)
         GM_Q_OPERATOR_BASE(-)
@@ -81,7 +177,7 @@ namespace gm {
             );        
         }
 
-        gm_quaternion<T> operator / (const T &value){
+        gm_quaternion<T> operator / (const T &value) {
             GM_ASSERT(value != static_cast<T>(0));
             gm_quaternion<T> v;
             v.x = x / value;
@@ -92,7 +188,7 @@ namespace gm {
             return v;
         }
 
-        gm_quaternion<T>& operator /= (const T &value){
+        gm_quaternion<T>& operator /= (const T &value) {
             GM_ASSERT(value != static_cast<T>(0));
             x /= value;
             y /= value;
@@ -102,7 +198,7 @@ namespace gm {
             return *this;
         }
 
-        gm_quaternion<T> operator * (const gm_quaternion<T> &q){
+        gm_quaternion<T> operator * (const gm_quaternion<T> &q) const {
             return gm_quaternion<T>(
                 w*q.x + x*q.w + y*q.z - z*q.y,
                 w*q.y + y*q.w + z*q.x - x*q.z,
@@ -111,18 +207,10 @@ namespace gm {
             );
         }
 
-        gm_quaternion<T>& operator *= (const gm_quaternion<T> &q){
+        gm_quaternion<T>& operator *= (const gm_quaternion<T> &q) {
             *this = *this * q;
 
             return *this;
-        }
-
-        gm_vec3<T> operator * (const gm_vec3<T> &v3) {
-            gm_vec3<T> r3(x, y, z);
-            T two = static_cast<T>(2);
-            return gm_vec3<T>(
-                two * dot(r3, v3) * r3 + (w * w - dot(r3,v3)) * v3 + two * w * cross(r3, v3)
-            );
         }
         
         bool operator==(const gm_quaternion<T>& q) const
@@ -136,22 +224,41 @@ namespace gm {
     GM_Q_OPERATOR_NUM_RIGHT(*)
 
     template<typename T>
-    gm_quaternion<T> operator / (const T &value, const gm_quaternion<T> &v){
+    gm_quaternion<T> operator / (const T &value, const gm_quaternion<T> &v)
+    {
         GM_ASSERT(v.x != static_cast<T>(0) && v.y != static_cast<T>(0) && v.z != static_cast<T>(0) && v.w != static_cast<T>(0));
         return gm_quaternion<T>(static_cast<T>(value) / v.x, static_cast<T>(value) / v.y, static_cast<T>(value) / v.z, static_cast<T>(value) / v.w);
     }
 
     template<typename T>
-    gm_vec3<T> operator * (const gm_vec3<T> &v3, const gm_quaternion<T> &q) {
-        gm_vec3<T> r3(q.x, q.y, q.z);
-        T two = static_cast<T>(2);
-        return gm_vec3<T>(
-            two * dot(r3, v3) * r3 + (q.w * q.w - dot(r3,v3)) * v3 + two * q.w * cross(r3, v3)
-        );
+    gm_vec3<T> operator * (const gm_quaternion<T> &q, const gm_vec3<T> &v) 
+    {
+        T two(2);
+        gm_vec3<T> uv, uuv;
+		gm_vec3<T> vq(q.x, q.y, q.z);
+		uv = vq.cross(v);
+		uuv = vq.cross(uv);
+		uv *= (Two * q.w); 
+		uuv *= Two; 
+
+		return v + uv + uuv;
     }
 
     template<typename T>
-    std::ostream& operator << (std::ostream &os, const gm_quaternion<T> &v){
+    gm_vec3<T> operator * (const gm_vec3<T> &v, const gm_quaternion<T> &q)
+    {
+        return q.inverse() * v;
+    }
+
+    template<typename T>
+    gm_vec4<T> operator * (const gm_quaternion<T> &q, const gm_vec4<T> &v);
+
+    template<typename T>
+    gm_vec4<T> operator * (const gm_vec4<T> &v, const gm_quaternion<T> &q); 
+
+    template<typename T>
+    std::ostream& operator << (std::ostream &os, const gm_quaternion<T> &v)
+    {
         using namespace std;
         os << setprecision(GM_OUTPUT_PRECISION)
            << setw(GM_OUTPUT_WIDTH)
@@ -161,131 +268,8 @@ namespace gm {
         return os;
     }
 
-    template<typename T>
-    T length(const gm_quaternion<T> &v){
-        return static_cast<T>(sqrt(v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w));
-    }
+} // namespace gm
 
-    template<typename T>
-    gm_quaternion<T> normalize(const gm_quaternion<T> &v) {
-        T avg = length(v);
-        bool isNoZero = avg != static_cast<T>(0);
-        GM_ASSERT(isNoZero);
-
-        return isNoZero ? gm_quaternion<T>(v.x/avg, v.y/avg, v.z/avg, v.w/avg) : gm_quaternion<T>();
-    }
-
-    template<typename T>
-    T dot(const gm_quaternion<T> &vL, const gm_quaternion<T> &vR) {
-        return vL.x * vR.x + vL.y * vR.y + vL.z * vR.z + vL.w * vR.w;
-    }
-
-    template<typename T>
-    gm_quaternion<T> conjugate(const gm_quaternion<T> &q) {
-        return gm_quaternion<T>(-q.x, -q.y, -q.z, q.w);
-    }
-
-    template<typename T>
-    T rotationAngle(const gm_quaternion<T> &q){
-        return static_cast<T>(acosSafe(q.w) * 2.0f);
-    }
-
-    template<typename T>
-    gm_vec3<T> rotationAxis(const gm_quaternion<T> &q){
-        T sinThetaPow2 = 1.0f - q.w * q.w;
-        bool isPositive =  sinThetaPow2 > static_cast<T>(0);
-        GM_ASSERT(isPositive);
-
-        if (isPositive){
-            T sinTheta = sqrt(sinThetaPow2);
-            return gm_vec3<T>(q.x / sinTheta, q.y / sinTheta, q.z / sinTheta);
-        } else {
-            return gm_vec3<T>(0);
-        }
-    }
-
-    template<typename T>
-    gm_vec3<T> eulerAngle(const gm_quaternion<T> &q) {
-        T h;
-        T p = asinSafe(-2.0f * (q.y * q.z + q.w * q.x));
-        T r = static_cast<T>(0);
-
-        T cosP = cos(p);
-        if (cosP != static_cast<T>(0)) {
-            h = atan2(q.x * q.z - q.w * q.y, 0.5f - q.x * q.x - q.y * q.y);
-            r = atan2(q.x * q.y - q.w * q.z, 0.5f - q.x * q.x - q.z * q.z);
-        } else {
-            h = atan2(-q.x * q.z - q.w * q.y, 0.5f - q.y * q.y - q.z * q.z);
-        }
-        
-        return gm_vec3<T>(h, p, r);
-    }
-
-    template<typename T>
-    gm_quaternion<T> pow(const gm_quaternion<T> &q, float exponent) {
-        // This will protect against divide by zero
-        if (fabs(q.w) > 1 - EPS) {
-            return q;
-        }
-
-        float alpha = acos(q.w);
-        float newAlpha = alpha * exponent;
-        float mult = sin(newAlpha) / sin(alpha);
-        
-        return gm_quaternion<T>(
-            q.x * mult,
-            q.y * mult,
-            q.z * mult,
-            cos(newAlpha)
-        );
-    }
-
-    template<typename T>
-    gm_quaternion<T> lerp(const gm_quaternion<T> &q0, const gm_quaternion<T> &q1, const float t) {
-        return gm_quaternion<T>(static_cast<T>(1.0f - t) * q0 + t * q1);
-    }
-
-    template<typename T>
-    gm_quaternion<T> nlerp(const gm_quaternion<T> &q0, const gm_quaternion<T> &q1, const float &t) {
-        return normalize(lerp(q0, q1, t));
-    }
-
-    // for spherical linear interpolation, see
-    // 3D Math Primer for Graphics and Game Development, 2nd Edition, Chapter 8
-    template<typename T>
-    gm_quaternion<T> slerp(gm_quaternion<T> q0, gm_quaternion<T> q1, const float &t) {
-        
-        if (t <= 0.0f) return q0;
-        if (t >= 1.0f) return q1;
-
-        // Keep the shortest arc
-        float cosTheta = float(dot(q0, q1));
-        
-        // q0 and q1 must be unit quaternions
-        GM_ASSERT(cosTheta < 1.1f);
-
-        if (cosTheta < 0.0f) {
-            q1 = -q1;
-            cosTheta = -cosTheta;
-        }
-
-        float k0, k1;
-        if (cosTheta > 1 - EPS) {
-            // Very close - just use linear interpolation,
-            // which will protect againt a divide by zero
-            k0 = 1.0f - t;
-            k1 = t;
-        } else {
-            float sinTheta = sqrt(1.0f - cosTheta*cosTheta);
-            float theta = atan2(sinTheta, cosTheta);
-            float oneOverSinTheta = 1.0f / sinTheta;
-            k0 = sin((1.0f - t) * theta) * oneOverSinTheta;
-            k1 = sin(t * theta) * oneOverSinTheta;
-        }
-
-        return gm_quaternion<T>(static_cast<T>(k0) * q0 + static_cast<T>(k1) * q1);
-    }
-
-}
+// #include "quaternion.inl"
 
 #endif //GM_QUATERNION_H

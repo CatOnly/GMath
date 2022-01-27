@@ -14,4 +14,4 @@ namespace gm {
         }
     }
     
-}
+} // namespace gm

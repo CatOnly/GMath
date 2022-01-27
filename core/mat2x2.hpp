@@ -34,6 +34,33 @@ namespace gm {
         explicit gm_mat2(const gm_vec2<T> &v):gm_mat2(v.x, v.y){}
         explicit gm_mat2(const T value = static_cast<T>(1)):gm_mat2(value, value){}
         
+		gm_mat2<T>& zero()
+		{
+			std::memset(&(_column[0][0]), 0, sizeof(T) * 4);
+
+			return *this;
+		}
+		gm_mat2<T>& unit()
+		{
+			_column[0][0] = 1.0f;
+			_column[1][1] = 1.0f;
+			_column[0][1] = 0.0f;
+			_column[1][0] = 0.0f;
+
+			return *this;
+		}
+
+		gm_vec2<T> row(int index) const {
+			return gm_vec2<T>(_column[0][index], _column[1][index]);
+		}
+
+		gm_mat2<T> transport() const {
+			return gm_mat2<T>(
+				row(0),
+				row(1)
+			);
+		}
+
         gm_mat2<T> operator - () const {
             return gm_mat2<T>(
                 -_column[0],
@@ -81,32 +108,6 @@ namespace gm {
         }
 
         return os;
-    }
-
-    template<typename T>
-    gm_mat2<T> transport(const gm_mat2<T> &m) {
-        return gm_mat2<T>(
-            row(m, 0), 
-            row(m, 1)
-        );
-    }
-
-    template<typename T>
-    gm_vec2<T> row(gm_mat2<T> m, int index) {
-        return gm_vec2<T>(m[0][index], m[1][index]);
-    }
-
-    template<typename T>
-    void zero(gm_mat2<T> &m)
-    {
-        std::memset(&(m[0][0]), 0, sizeof(T) * 4);
-    }
-    template<typename T>
-    void identity(gm_mat2<T> &m)
-    {
-        zero(m);
-        m[0][0] = 1.0f;
-        m[1][1] = 1.0f;
     }
 
     // -- vector * matrix --------------

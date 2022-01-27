@@ -12,4 +12,4 @@ namespace gm {
         _column[1][1] = m[1][1];
     }
     
-}
+} // namespace gm 

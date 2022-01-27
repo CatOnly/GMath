@@ -1,6 +1,8 @@
-#ifndef GM_UTIL_H
-#define GM_UTIL_H
+#ifndef GM_COMMON_H
+#define GM_COMMON_H
 
+#include <iostream>
+#include <iomanip>
 #include <math.h>
 
 // Frequent calls to assert are inefficient
@@ -60,27 +62,63 @@ namespace gm {
 	const static double PI_3_2 = 4.71238898038469;  // PI * 3/2
 	const static double ANGLE_TO_RADIAN = 0.01745329251994;  // PI / 180.0
 
+    template<typename T>  class gm_vec3;
+    template<typename T>  class gm_vec4;
+    template<typename T>  class gm_quaternion;
+
     template<typename T>
-    T acosSafe(const T &angle){
+    T acos(const T &angle){
         if (angle <= -1) {
             return static_cast<T>(PI);
         } else if (angle >= 1) {
             return static_cast<T>(0);
         } else {
-            return static_cast<T>(acos(angle));
+            return static_cast<T>(std::acos(angle));
         }
     }
 
     template<typename T>
-    T asinSafe(const T &angle){
+    T asin(const T &angle){
         if (angle <= -1) {
             return static_cast<T>(PI_3_2);
         } else if (angle >= 1) {
             return static_cast<T>(PI_1_2);
         } else {
-            return static_cast<T>(asin(angle));
+            return static_cast<T>(std::asin(angle));
         }
     }
+
+    template<typename T>
+    T sin(const T v)
+    {
+        return std::sin(v);
+    }
+
+    template<typename T>
+    T cos(const T v)
+    {
+        return std::cos(v);
+    }
+
+    template<typename T>
+    gm_vec3<T> sin(const gm_vec3<T> &v);
+
+    template<typename T>
+    gm_vec3<T> cos(const gm_vec3<T> &v);
+
+    template<typename T>
+    gm_quaternion<T> pow(const gm_quaternion<T> &q, float exponent);
+
+    template<typename T>
+    gm_quaternion<T> lerp(const gm_quaternion<T> &q0, const gm_quaternion<T> &q1, float t);
+
+    template<typename T>
+    gm_quaternion<T> nlerp(const gm_quaternion<T> &q0, const gm_quaternion<T> &q1, float t);
+
+    template<typename T>
+    gm_quaternion<T> slerp(const gm_quaternion<T> &q0, const gm_quaternion<T> &q1, float t);
 }
 
-#endif // GM_UTIL_H
+//#include "common.inl"
+
+#endif // GM_COMMON_H
