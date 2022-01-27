@@ -45,6 +45,10 @@
 #define GM_RADIANS(x) ((x) * gm::ANGLE_TO_RADIAN)
 #endif
 
+#ifndef GM_ANGLES
+#define GM_ANGLES(x) ((x) * gm::RADIAN_TO_ANGLE)
+#endif
+
 #ifndef GM_LERP
 #define GM_LERP(a,b,w) ((a) + (w) * ((b) - (a)))
 #endif
@@ -61,6 +65,7 @@ namespace gm {
 	const static double PI_1_2 = 1.570796326794897; // PI * 1/2
 	const static double PI_3_2 = 4.71238898038469;  // PI * 3/2
 	const static double ANGLE_TO_RADIAN = 0.01745329251994;  // PI / 180.0
+	const static double RADIAN_TO_ANGLE = 57.2957795130823;  // 180.0 / PI 
 
     template<typename T>  class gm_vec3;
     template<typename T>  class gm_vec4;

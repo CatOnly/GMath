@@ -138,21 +138,17 @@ namespace gm {
             return q * gm_quaternion<T>(std::cos(AngleRad * T(0.5)), Tmp.x * fSin, Tmp.y * fSin, Tmp.z * fSin);
         }
 
-        gm_vec3<T> euler() const {
-            T h;
-            T p = gm::asin(-2.0f * (y * z + w * x));
-            T r = T(0);
+		T roll() const {
+			return GM_ANGLES(atan2(T(2) * (x * y + w * z), w * w + x * x - y * y - z * z));
+		}
 
-            T cosP = std::cos(p);
-            if (cosP != T(0)) {
-                h = std::atan2(x * z - w * y, 0.5f - x * x - y * y);
-                r = std::atan2(x * y - w * z, 0.5f - x * x - z * z);
-            } else {
-                h = std::atan2(-x * z - w * y, 0.5f - y * y - z * z);
-            }
-            
-            return gm_vec3<T>(h, p, r);
-        }
+		T pitch() const {
+			return GM_ANGLES(atan2(T(2) * (y * z + w * x), w * w - x * x - y * y + z * z));
+		}
+
+		T yaw() const  {
+			return GM_ANGLES(asin(T(-2) * (x * z - w * y)));
+		}
 
         gm_mat4<T> mat3() const;
         gm_mat4<T> mat4() const;
