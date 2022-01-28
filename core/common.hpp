@@ -5,6 +5,33 @@
 #include <iomanip>
 #include <math.h>
 
+#define GM_OUTPUT_WIDTH 0
+#define GM_OUTPUT_PRECISION 2
+#define GM_OUTPUT_FIXED
+
+#define GM_RIGHT_HANDED 1
+#define GM_LEFT_HANDED  0
+#define GM_USE_COORDINATE GM_RIGHT_HANDED
+
+#define GM_IS_Z_SCORPE_0_TO_1 1
+
+#define GM_DEBUG_ON  1
+#define GM_DEBUG_OFF 0
+#define GM_DEBUG GM_DEBUG_OFF
+
+// dependent define
+#if GM_OUTPUT_PRECISION > 0
+#define GM_OUTPUT_POINT_CMD showpoint
+#else
+#define GM_OUTPUT_POINT_CMD noshowpoint
+#endif
+
+#ifdef GM_OUTPUT_FIXED
+#define GM_OUTPUT_FIXED_CMD fixed
+#else
+#define GM_OUTPUT_FIXED_CMD ""
+#endif
+
 // Frequent calls to assert are inefficient
 #if GM_DEBUG == GM_DEBUG_ON
 #   include <cassert>
@@ -67,10 +94,6 @@ namespace gm {
 	const static double ANGLE_TO_RADIAN = 0.01745329251994;  // PI / 180.0
 	const static double RADIAN_TO_ANGLE = 57.2957795130823;  // 180.0 / PI 
 
-    template<typename T>  class gm_vec3;
-    template<typename T>  class gm_vec4;
-    template<typename T>  class gm_quaternion;
-
     template<typename T>
     T acos(const T &angle){
         if (angle <= -1) {
@@ -105,25 +128,6 @@ namespace gm {
         return std::cos(v);
     }
 
-    template<typename T>
-    gm_vec3<T> sin(const gm_vec3<T> &v);
-
-    template<typename T>
-    gm_vec3<T> cos(const gm_vec3<T> &v);
-
-    template<typename T>
-    gm_quaternion<T> pow(const gm_quaternion<T> &q, float exponent);
-
-    template<typename T>
-    gm_quaternion<T> lerp(const gm_quaternion<T> &q0, const gm_quaternion<T> &q1, float t);
-
-    template<typename T>
-    gm_quaternion<T> nlerp(const gm_quaternion<T> &q0, const gm_quaternion<T> &q1, float t);
-
-    template<typename T>
-    gm_quaternion<T> slerp(const gm_quaternion<T> &q0, const gm_quaternion<T> &q1, float t);
-}
-
-//#include "common.inl"
+} // namespace gm
 
 #endif // GM_COMMON_H

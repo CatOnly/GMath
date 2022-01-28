@@ -1,7 +1,7 @@
 #ifndef GM_TRANSFORM_H
 #define GM_TRANSFORM_H
 
-#include "transform3D.hpp"
+#include "transform2D.hpp"
 
 namespace gm {
 

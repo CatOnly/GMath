@@ -36,18 +36,20 @@ namespace gm {
             _column[3] = gm_vec4<T>(w1, w2, w3, w4);
         }
 
-        gm_mat4(const T x, const T y, const T z, const T w):gm_mat4(
-                                                                 static_cast<T>(x), static_cast<T>(0), static_cast<T>(0), static_cast<T>(0),
-                                                                 static_cast<T>(0), static_cast<T>(y), static_cast<T>(0), static_cast<T>(0),
-                                                                 static_cast<T>(0), static_cast<T>(0), static_cast<T>(z), static_cast<T>(0),
-                                                                 static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(w)){}
-        explicit gm_mat4(const gm_vec4<T> &vector4):gm_mat4(vector4.x, vector4.y, vector4.z, vector4.w){}
-        explicit gm_mat4(const T value = static_cast<T>(1)):gm_mat4(value, value, value, value){}
+        gm_mat4(const T x, const T y, const T z, const T w) : gm_mat4(
+				T(x), T(0), T(0), T(0),
+				T(0), T(y), T(0), T(0),
+				T(0), T(0), T(z), T(0),
+				T(0), T(0), T(0), T(w)
+		){}
+
+        explicit gm_mat4(const gm_vec4<T> &v) : gm_mat4(v.x, v.y, v.z, v.w){}
+        explicit gm_mat4(const T value = T(1)) : gm_mat4(value, value, value, value){}
         explicit gm_mat4(const gm_mat3<T> &m3){
             _column[0] = gm_vec4<T>(m3[0]);
             _column[1] = gm_vec4<T>(m3[1]);
             _column[2] = gm_vec4<T>(m3[2]);
-            _column[3] = gm_vec4<T>(static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(1));
+            _column[3] = gm_vec4<T>(T(0), T(0), T(0), T(1));
         }
 
         gm_mat4<T>& zero()
@@ -233,7 +235,5 @@ namespace gm {
         );
     }
 }
-
-#include "mat4x4.inl"
 
 #endif // GM_MAT4X4_H

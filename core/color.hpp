@@ -13,12 +13,12 @@ namespace gm {
         union { struct{ uint8_t r, g, b, a; }; uint32_t data; };
 #endif
         uint32_t& buffer() { return *((uint32_t*)this); };
-        gm_vec4<float> vec4() { return gm_vec4<float>(r/255.0f, g/255.0f, b/255.0f, a/255.0f); };
+        gm_vec4<float> vec4() { return gm_vec4<float>(r, g, b, a); };
 
         Color() = default;
         Color(const uint32_t& b):data(b) {}
-        Color(const gm_vec3<float>& v3):r(v3.r*255),g(v3.g*255),b(v3.b*255),a(255) {}
-        Color(const gm_vec4<float>& v4):r(v4.r*255),g(v4.g*255),b(v4.b*255),a(v4.a*255) {}
+        Color(const gm_vec3<float>& v3):r(v3.r),g(v3.g),b(v3.b),a(255) {}
+        Color(const gm_vec4<float>& v4):r(v4.r),g(v4.g),b(v4.b),a(v4.a) {}
 
 		uint8_t & operator[](int i) {
 				GM_ASSERT(i >= 0 && i < 4);

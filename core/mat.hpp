@@ -3,7 +3,7 @@
 
 #define GM_MAT_VALUE_PTR_FROM(size)\
 template<typename T>\
-const T *valuePtrFrom(const gm_mat##size<T> &m) {\
+static inline const T *valuePtrFrom(const gm_mat##size<T> &m) {\
     return &(m[0][0]);\
 }
 

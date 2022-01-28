@@ -1,11 +1,29 @@
 #ifndef GM_GEOMETRIC_H
 #define GM_GEOMETRIC_H
 
-#include "mat2x2.hpp"
-#include "mat3x3.hpp"
 #include "mat4x4.hpp"
 
 namespace gm {
+
+	template<typename T>
+	gm_vec3<T> sin(const gm_vec3<T> &v)
+	{
+		return gm_vec3<T>(
+			std::sin(v.x),
+			std::sin(v.y),
+			std::sin(v.z)
+			);
+	}
+
+	template<typename T>
+	gm_vec3<T> cos(const gm_vec3<T> &v)
+	{
+		return gm_vec3<T>(
+			std::cos(v.x),
+			std::cos(v.y),
+			std::cos(v.z)
+			);
+	}
 
     template<typename T>
     T det(const gm_mat2<T> &m)

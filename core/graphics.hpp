@@ -1,7 +1,7 @@
 #ifndef GM_GRPAH_H
 #define GM_GRPAH_H
 
-#include "geometric.hpp"
+#include "math.hpp"
 
 namespace gm {
 

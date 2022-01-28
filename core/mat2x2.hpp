@@ -22,8 +22,6 @@ namespace gm {
             _column[1] = m[1];
         }
         
-        gm_mat2(const gm_mat3<T> &m);
-
         gm_mat2(const T x1, const T x2,
                 const T y1, const T y2){
             _column[0] = gm_vec2<T>(x1, x2);
@@ -31,9 +29,11 @@ namespace gm {
         }
         gm_mat2(const T x, const T y):gm_mat2(static_cast<T>(x), static_cast<T>(0),
                                               static_cast<T>(0), static_cast<T>(y)){}
+
         explicit gm_mat2(const gm_vec2<T> &v):gm_mat2(v.x, v.y){}
         explicit gm_mat2(const T value = static_cast<T>(1)):gm_mat2(value, value){}
-        
+		explicit gm_mat2(const gm_mat3<T> &m);
+
 		gm_mat2<T>& zero()
 		{
 			std::memset(&(_column[0][0]), 0, sizeof(T) * 4);
@@ -50,11 +50,11 @@ namespace gm {
 			return *this;
 		}
 
-		gm_vec2<T> row(int index) const {
+		inline gm_vec2<T> row(int index) const {
 			return gm_vec2<T>(_column[0][index], _column[1][index]);
 		}
 
-		gm_mat2<T> transport() const {
+		inline gm_mat2<T> transport() const {
 			return gm_mat2<T>(
 				row(0),
 				row(1)
@@ -125,23 +125,23 @@ namespace gm {
     template<typename T>
     gm_vec2<T> operator * (const gm_mat2<T> &m, const gm_vec2<T> &col) {
         return gm_vec2<T>(
-            dot(row(m, 0), col),
-            dot(row(m, 1), col)
+			row(0).dot(col),
+			row(1).dot(col)
         );
     }
 
     // -- matrix * matrix --------------
     template<typename T>
     gm_mat2<T> operator * (const gm_mat2<T> &mL, const gm_mat2<T> &mR) {
-        gm_vec2<T> row0 = row(mL, 0);
-        gm_vec2<T> row1 = row(mL, 1);
+        gm_vec2<T> row0 = mL.row(0);
+        gm_vec2<T> row1 = mL.row(1);
 
         const gm_vec2<T> &col0 = mR[0];
         const gm_vec2<T> &col1 = mR[1];
 
         return gm_mat2<T>(
-            dot(row0, col0), dot(row1, col0),
-            dot(row0, col1), dot(row1, col1)
+			row0.dot(col0), row1.dot(col0),
+			row0.dot(col1), row1.dot(col1)
         );
     }
 }

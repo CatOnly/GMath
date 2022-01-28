@@ -1,5 +1,3 @@
-
-#include "mat3x3.hpp"
 #include "mat4x4.hpp"
 
 namespace gm {
