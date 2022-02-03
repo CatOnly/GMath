@@ -81,14 +81,14 @@ namespace gm {
         }
 
         T length() const {
-            return sqrt(x * x + y * y);
+            return gm::sqrt(x * x + y * y);
         }
 
         T distance(const gm_vec2<T> &vTo) const {
             T disX = vTo.x - x;
             T disY = vTo.y - y;
 
-            return static_cast<T>(sqrt(disX*disX +  disY*disY));
+            return static_cast<T>(gm::sqrt(disX*disX +  disY*disY));
         }
 
 		gm_vec2<T> normalize() const {

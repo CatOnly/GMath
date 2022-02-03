@@ -60,6 +60,19 @@ namespace gm {
 				row(1)
 			);
 		}
+        
+        inline T det() const {
+            return _column[0][0] * _column[1][1] - _column[1][0] * _column[0][1];
+        }
+        
+        inline gm_mat2<T> inverse() const {
+            T Determinant = det();
+
+            return gm_mat2<T>(
+                          _column[1][1] / Determinant, - _column[0][1] / Determinant,
+                        - _column[1][0] / Determinant,   _column[0][0] / Determinant
+                   );
+        }
 
         gm_mat2<T> operator - () const {
             return gm_mat2<T>(
@@ -125,8 +138,8 @@ namespace gm {
     template<typename T>
     gm_vec2<T> operator * (const gm_mat2<T> &m, const gm_vec2<T> &col) {
         return gm_vec2<T>(
-			row(0).dot(col),
-			row(1).dot(col)
+            m.row(0).dot(col),
+            m.row(1).dot(col)
         );
     }
 

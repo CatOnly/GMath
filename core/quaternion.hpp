@@ -1,7 +1,7 @@
 #ifndef GM_QUATERNION_H
 #define GM_QUATERNION_H
 
-#include "math.hpp"
+#include "common.hpp"
 
 #define GM_Q_OPERATOR_BASE(symbol) \
 gm_quaternion<T> operator symbol (const gm_quaternion<T> &a){\

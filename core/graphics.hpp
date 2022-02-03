@@ -1,7 +1,8 @@
 #ifndef GM_GRPAH_H
 #define GM_GRPAH_H
 
-#include "math.hpp"
+#include "common.hpp"
+#include "mat4x4.hpp"
 
 namespace gm {
 
@@ -17,7 +18,7 @@ namespace gm {
 		if (k < T(0))
 			return T(0);
 		else
-			return eta * I - (eta * dotValue + sqrt(k)) * N;
+			return eta * I - (eta * dotValue + gm::sqrt(k)) * N;
 	}
 
     // For aces filmic tone mapping curve, see
@@ -114,7 +115,7 @@ namespace gm {
     template<typename T>
     gm_mat4<T> perspective(const T yHalfFov, const T width, const T height, const T zNear, const T zFar)
     {
-		T top = static_cast<T>(tan(GM_RADIANS(yHalfFov / static_cast<T>(2)))) * zNear;
+		T top = static_cast<T>(gm::tan(GM_RADIANS(yHalfFov / static_cast<T>(2)))) * zNear;
 		T right = top * width / height;
 		T zScope = zFar - zNear;
 
@@ -144,7 +145,7 @@ namespace gm {
      */
     template<typename T>
     gm_mat4<T> perspective(const T yHalfFov, const T width, const T height, const T zNear, const T zFar) {
-        T tanHalfFovY = static_cast<T>(tan(GM_RADIANS(yHalfFov / static_cast<T>(2))));
+        T tanHalfFovY = static_cast<T>(gm::tan(GM_RADIANS(yHalfFov / static_cast<T>(2))));
         T zNegScope = zNear - zFar;
 
         gm_mat4<T> m4(

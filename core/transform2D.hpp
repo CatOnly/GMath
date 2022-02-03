@@ -31,13 +31,13 @@ namespace gm {
             m3.identity();
             if (isRotateFirst)
             {
-                m3.rotate(rotate.y, AXIS_V2_X);
+                m3.rotate(rotate.y, AXIS_X_V2);
                 m3.translate(translate);
             }
             else
             {
                 m3.translate(translate);
-                m3.rotate(rotate.y, AXIS_V2_Y);
+                m3.rotate(rotate.y, AXIS_Y_V2);
             }
             
             return m3;

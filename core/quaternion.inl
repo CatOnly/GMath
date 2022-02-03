@@ -24,12 +24,12 @@ namespace gm {
 		}
 
 		float thetaHalf = float(GM_ANGLES(theta / 2));
-		float sinThetaHalf = sin(thetaHalf);
+        float sinThetaHalf = gm::sin(thetaHalf);
 
 		x = axis.x * sinThetaHalf;
 		y = axis.y * sinThetaHalf;
 		z = axis.z * sinThetaHalf;
-		w = cos(thetaHalf);
+        w = gm::cos(thetaHalf);
 	}
 
     template <typename T>
@@ -58,7 +58,7 @@ namespace gm {
             biggestIndex = 3;
         }
 
-        T biggestVal = sqrt(fourBiggestSquaredMinus1 + T(1)) * T(0.5);
+        T biggestVal = gm::sqrt(fourBiggestSquaredMinus1 + T(1)) * T(0.5);
         T mult = T(0.25) / biggestVal;
 
         switch(biggestIndex)
@@ -152,8 +152,8 @@ namespace gm {
 		gm_vec3<T> vq(q.x, q.y, q.z);
 		uv = vq.cross(v);
 		uuv = vq.cross(uv);
-		uv *= (Two * q.w);
-		uuv *= Two;
+		uv *= (two * q.w);
+		uuv *= two;
 
 		return v + uv + uuv;
 	}
@@ -179,7 +179,7 @@ namespace gm {
 	template <typename T>
 	T gm_quaternion<T>::length(const gm_quaternion<T> &q) const 
 	{
-		return std::sqrt(dot(q));
+		return gm::sqrt(dot(q));
 	}
 
 	template <typename T>
@@ -209,7 +209,7 @@ namespace gm {
 	}
 
 	template<typename T>
-	gm_quaternion<T> gm_quaternion<T>::cross(const gm_quaternion<T> &v) const 
+	gm_quaternion<T> gm_quaternion<T>::cross(const gm_quaternion<T> &q) const 
 	{
 		return gm_quaternion<T>(
 			w * q.w - x * q.x - y * q.y - z * q.z,
@@ -247,27 +247,27 @@ namespace gm {
 		}
 
 		T AngleRad = GM_RADIANS(angle);
-		T fSin = std::sin(AngleRad * T(0.5));
+		T fSin = gm::sin(AngleRad * T(0.5));
 
-		return q * gm_quaternion<T>(std::cos(AngleRad * T(0.5)), Tmp.x * fSin, Tmp.y * fSin, Tmp.z * fSin);
+		return (*this) * gm_quaternion<T>(gm::cos(AngleRad * T(0.5)), Tmp.x * fSin, Tmp.y * fSin, Tmp.z * fSin);
 	}
 
 	template<typename T>
 	T gm_quaternion<T>::roll() const 
 	{
-		return GM_ANGLES(atan2(T(2) * (x * y + w * z), w * w + x * x - y * y - z * z));
+		return GM_ANGLES(gm::atan2(T(2) * (x * y + w * z), w * w + x * x - y * y - z * z));
 	}
 
 	template<typename T>
 	T gm_quaternion<T>::pitch() const 
 	{
-		return GM_ANGLES(atan2(T(2) * (y * z + w * x), w * w - x * x - y * y + z * z));
+		return GM_ANGLES(gm::atan2(T(2) * (y * z + w * x), w * w - x * x - y * y + z * z));
 	}
 
 	template<typename T>
 	T gm_quaternion<T>::yaw() const 
 	{
-		return GM_ANGLES(asin(T(-2) * (x * z - w * y)));
+        return GM_ANGLES(gm::asin(T(-2) * (x * z - w * y)));
 	}
 
 	template<typename T>
@@ -278,15 +278,15 @@ namespace gm {
 			return q;
 		}
 
-		float alpha = std::acos(q.w);
+		float alpha = gm::acos(q.w);
 		float newAlpha = alpha * exponent;
-		float mult = std::sin(newAlpha) / std::sin(alpha);
+		float mult = gm::sin(newAlpha) / gm::sin(alpha);
 
 		return gm_quaternion<T>(
 			q.x * mult,
 			q.y * mult,
 			q.z * mult,
-			std::cos(newAlpha)
+			gm::cos(newAlpha)
 			);
 	}
 
@@ -332,8 +332,8 @@ namespace gm {
 			k1 = t;
 		}
 		else {
-			float sinTheta = sqrt(1.0f - cosTheta * cosTheta);
-			float theta = atan2(sinTheta, cosTheta);
+			float sinTheta = gm::sqrt(1.0f - cosTheta * cosTheta);
+			float theta = gm::atan2(sinTheta, cosTheta);
 			float oneOverSinTheta = 1.0f / sinTheta;
 			k0 = gm::sin((1.0f - t) * theta) * oneOverSinTheta;
 			k1 = gm::sin(t * theta) * oneOverSinTheta;

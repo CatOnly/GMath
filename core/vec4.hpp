@@ -86,7 +86,7 @@ namespace gm {
         }
 
         T length() const {
-            return sqrt(x * x + y * y + z * z + w * w);
+            return gm::sqrt(x * x + y * y + z * z + w * w);
         }
 
         gm_vec4<T> normalize() const {
@@ -103,7 +103,7 @@ namespace gm {
             T disZ = vTo.z - z;
             T disW = vTo.w - w;
 
-            return static_cast<T>(sqrt(disX*disX +  disY*disY + disZ*disZ + disW*disW));
+            return static_cast<T>(gm::sqrt(disX*disX +  disY*disY + disZ*disZ + disW*disW));
         }
 
         gm_vec4<T> operator - () const {            

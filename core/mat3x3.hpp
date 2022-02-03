@@ -69,35 +69,53 @@ namespace gm {
 		}
 
 		gm_mat3<T>& rotate(const float& x, const float& y) {
-			_column[0] *= v.x;
-			_column[1] *= v.y;
+			_column[0] *= x;
+			_column[1] *= y;
 
 			return *this;
 		}
 
 		gm_mat3<T>& translate(const gm_vec2<T> &v) {
-			_column[2] += _column[0] * v.x + _column[1] * v.y£»
+            _column[2] += _column[0] * v.x + _column[1] * v.y;
 			return *this;
 		}
 
-		gm_vec3<T> row(int index) const {
+		inline gm_vec3<T> row(int index) const {
 			return gm_vec3<T>(_column[0][index], _column[1][index], _column[2][index]);
 		}
 
-		gm_mat3<T> transpose() const {
+		inline gm_mat3<T> transpose() const {
 			return gm_mat3<T>(
 				row(0),
 				row(1),
 				row(2)
 			);
 		}
+        
+        inline T det() const {
+            return   _column[0][0] * (_column[1][1] * _column[2][2] - _column[1][2] * _column[2][1])
+                   - _column[0][1] * (_column[1][0] * _column[2][2] - _column[1][2] * _column[2][0])
+                   + _column[0][2] * (_column[1][0] * _column[2][1] - _column[1][1] * _column[2][0]);
+        }
+        
+        gm_mat3<T> inverse() const {
+            T Determinant = det();
 
-		gm_mat3<T> inverseTranspose() const
-		{
-			T Determinant =
-				+ _column[0][0] * (_column[1][1] * _column[2][2] - _column[1][2] * _column[2][1])
-				- _column[0][1] * (_column[1][0] * _column[2][2] - _column[1][2] * _column[2][0])
-				+ _column[0][2] * (_column[1][0] * _column[2][1] - _column[1][1] * _column[2][0]);
+            return gm_mat3<T>(
+                          (_column[1][1] * _column[2][2] - _column[2][1] * _column[1][2]) / Determinant,
+                        - (_column[1][0] * _column[2][2] - _column[2][0] * _column[1][2]) / Determinant,
+                          (_column[1][0] * _column[2][1] - _column[2][0] * _column[1][1]) / Determinant,
+                        - (_column[0][1] * _column[2][2] - _column[2][1] * _column[0][2]) / Determinant,
+                          (_column[0][0] * _column[2][2] - _column[2][0] * _column[0][2]) / Determinant,
+                        - (_column[0][0] * _column[2][1] - _column[2][0] * _column[0][1]) / Determinant,
+                          (_column[0][1] * _column[1][2] - _column[1][1] * _column[0][2]) / Determinant,
+                        - (_column[0][0] * _column[1][2] - _column[1][0] * _column[0][2]) / Determinant,
+                          (_column[0][0] * _column[1][1] - _column[1][0] * _column[0][1]) / Determinant
+                   );
+        }
+
+		gm_mat3<T> inverseTranspose() const {
+            T Determinant = det();
 
 			gm_mat3<T> Inverse;
 			Inverse[0][0] = +(_column[1][1] * _column[2][2] - _column[2][1] * _column[1][2]);
@@ -184,29 +202,29 @@ namespace gm {
 
     // -- matrix * vector --------------
     template<typename T>
-    gm_vec3<T> operator * (const gm_mat3<T> &mat, const gm_vec3<T> &col) {
+    gm_vec3<T> operator * (const gm_mat3<T> &m, const gm_vec3<T> &v) {
         return gm_vec3<T>(
-            dot(row(mat, 0), col), 
-            dot(row(mat, 1), col), 
-            dot(row(mat, 2), col)
+            m.row(0).dot(v),
+            m.row(1).dot(v),
+            m.row(2).dot(v)
         );
     }
 
     // -- matrix * matrix --------------
     template<typename T>
     gm_mat3<T> operator * (const gm_mat3<T> &matL, const gm_mat3<T> &matR) {
-        gm_vec3<T> row0 = row(matL, 0);
-        gm_vec3<T> row1 = row(matL, 1);
-        gm_vec3<T> row2 = row(matL, 2);
+        gm_vec3<T> row0 = matL.row(0);
+        gm_vec3<T> row1 = matL.row(1);
+        gm_vec3<T> row2 = matL.row(2);
 
         const gm_vec3<T> &col0 = matR[0];
         const gm_vec3<T> &col1 = matR[1];
         const gm_vec3<T> &col2 = matR[2];
 
         return gm_mat3<T>(
-            dot(row0, col0), dot(row1, col0), dot(row2,col0),
-            dot(row0, col1), dot(row1, col1), dot(row2,col1),
-            dot(row0, col2), dot(row1, col2), dot(row2,col2)
+            row0.dot(col0), row1.dot(col0), row2.dot(col0),
+            row0.dot(col1), row1.dot(col1), row2.dot(col1),
+            row0.dot(col2), row1.dot(col2), row2.dot(col2)
         );
     }
 }

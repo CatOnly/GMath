@@ -95,8 +95,8 @@ namespace gm {
          */ 
         gm_mat4<T>& rotate(const T angle, const gm_vec3<T> &v3) {
             T a = GM_RADIANS(angle);
-            T const c = std::cos(a);
-            T const s = std::sin(a);
+            T const c = gm::cos(a);
+            T const s = gm::sin(a);
 
             gm_vec3<T> axis(v3.normalize());
             gm_vec3<T> temp((T(1) - c) * axis);
@@ -123,11 +123,11 @@ namespace gm {
             return *this;
         }
 
-		gm_vec4<T> row(int index) const {
+		inline gm_vec4<T> row(int index) const {
 			return gm_vec4<T>(_column[0][index], _column[1][index], _column[2][index], _column[3][index]);
 		}
 
-		gm_mat4<T> transport() const {
+		inline gm_mat4<T> transport() const {
 			return gm_mat4<T>(
 				row(0),
 				row(1),
@@ -135,6 +135,73 @@ namespace gm {
 				row(3)
 			);
 		}
+        
+        inline T det() const {
+            T SubFactor00 = _column[2][2] * _column[3][3] - _column[3][2] * _column[2][3];
+            T SubFactor01 = _column[2][1] * _column[3][3] - _column[3][1] * _column[2][3];
+            T SubFactor02 = _column[2][1] * _column[3][2] - _column[3][1] * _column[2][2];
+            T SubFactor03 = _column[2][0] * _column[3][3] - _column[3][0] * _column[2][3];
+            T SubFactor04 = _column[2][0] * _column[3][2] - _column[3][0] * _column[2][2];
+            T SubFactor05 = _column[2][0] * _column[3][1] - _column[3][0] * _column[2][1];
+
+            return   _column[0][0] * (_column[1][1] * SubFactor00 - _column[1][2] * SubFactor01 + _column[1][3] * SubFactor02)
+                   - _column[0][1] * (_column[1][0] * SubFactor00 - _column[1][2] * SubFactor03 + _column[1][3] * SubFactor04)
+                   + _column[0][2] * (_column[1][0] * SubFactor01 - _column[1][1] * SubFactor03 + _column[1][3] * SubFactor05)
+                   - _column[0][3] * (_column[1][0] * SubFactor02 - _column[1][1] * SubFactor04 + _column[1][2] * SubFactor05);
+        }
+        
+        gm_mat4<T> inverse() const {
+            T SubFactor00 = _column[2][2] * _column[3][3] - _column[3][2] * _column[2][3];
+            T SubFactor01 = _column[2][1] * _column[3][3] - _column[3][1] * _column[2][3];
+            T SubFactor02 = _column[2][1] * _column[3][2] - _column[3][1] * _column[2][2];
+            T SubFactor03 = _column[2][0] * _column[3][3] - _column[3][0] * _column[2][3];
+            T SubFactor04 = _column[2][0] * _column[3][2] - _column[3][0] * _column[2][2];
+            T SubFactor05 = _column[2][0] * _column[3][1] - _column[3][0] * _column[2][1];
+            T SubFactor06 = _column[1][2] * _column[3][3] - _column[3][2] * _column[1][3];
+            T SubFactor07 = _column[1][1] * _column[3][3] - _column[3][1] * _column[1][3];
+            T SubFactor08 = _column[1][1] * _column[3][2] - _column[3][1] * _column[1][2];
+            T SubFactor09 = _column[1][0] * _column[3][3] - _column[3][0] * _column[1][3];
+            T SubFactor10 = _column[1][0] * _column[3][2] - _column[3][0] * _column[1][2];
+            T SubFactor11 = _column[1][1] * _column[3][3] - _column[3][1] * _column[1][3];
+            T SubFactor12 = _column[1][0] * _column[3][1] - _column[3][0] * _column[1][1];
+            T SubFactor13 = _column[1][2] * _column[2][3] - _column[2][2] * _column[1][3];
+            T SubFactor14 = _column[1][1] * _column[2][3] - _column[2][1] * _column[1][3];
+            T SubFactor15 = _column[1][1] * _column[2][2] - _column[2][1] * _column[1][2];
+            T SubFactor16 = _column[1][0] * _column[2][3] - _column[2][0] * _column[1][3];
+            T SubFactor17 = _column[1][0] * _column[2][2] - _column[2][0] * _column[1][2];
+            T SubFactor18 = _column[1][0] * _column[2][1] - _column[2][0] * _column[1][1];
+
+            gm_mat4<T> Inverse;
+            Inverse[0][0] = + (_column[1][1] * SubFactor00 - _column[1][2] * SubFactor01 + _column[1][3] * SubFactor02);
+            Inverse[0][1] = - (_column[1][0] * SubFactor00 - _column[1][2] * SubFactor03 + _column[1][3] * SubFactor04);
+            Inverse[0][2] = + (_column[1][0] * SubFactor01 - _column[1][1] * SubFactor03 + _column[1][3] * SubFactor05);
+            Inverse[0][3] = - (_column[1][0] * SubFactor02 - _column[1][1] * SubFactor04 + _column[1][2] * SubFactor05);
+
+            Inverse[1][0] = - (_column[0][1] * SubFactor00 - _column[0][2] * SubFactor01 + _column[0][3] * SubFactor02);
+            Inverse[1][1] = + (_column[0][0] * SubFactor00 - _column[0][2] * SubFactor03 + _column[0][3] * SubFactor04);
+            Inverse[1][2] = - (_column[0][0] * SubFactor01 - _column[0][1] * SubFactor03 + _column[0][3] * SubFactor05);
+            Inverse[1][3] = + (_column[0][0] * SubFactor02 - _column[0][1] * SubFactor04 + _column[0][2] * SubFactor05);
+
+            Inverse[2][0] = + (_column[0][1] * SubFactor06 - _column[0][2] * SubFactor07 + _column[0][3] * SubFactor08);
+            Inverse[2][1] = - (_column[0][0] * SubFactor06 - _column[0][2] * SubFactor09 + _column[0][3] * SubFactor10);
+            Inverse[2][2] = + (_column[0][0] * SubFactor11 - _column[0][1] * SubFactor09 + _column[0][3] * SubFactor12);
+            Inverse[2][3] = - (_column[0][0] * SubFactor08 - _column[0][1] * SubFactor10 + _column[0][2] * SubFactor12);
+
+            Inverse[3][0] = - (_column[0][1] * SubFactor13 - _column[0][2] * SubFactor14 + _column[0][3] * SubFactor15);
+            Inverse[3][1] = + (_column[0][0] * SubFactor13 - _column[0][2] * SubFactor16 + _column[0][3] * SubFactor17);
+            Inverse[3][2] = - (_column[0][0] * SubFactor14 - _column[0][1] * SubFactor16 + _column[0][3] * SubFactor18);
+            Inverse[3][3] = + (_column[0][0] * SubFactor15 - _column[0][1] * SubFactor17 + _column[0][2] * SubFactor18);
+
+            T Determinant =
+                + _column[0][0] * Inverse[0][0]
+                + _column[0][1] * Inverse[0][1]
+                + _column[0][2] * Inverse[0][2]
+                + _column[0][3] * Inverse[0][3];
+
+            Inverse /= Determinant;
+
+            return Inverse;
+        }
 
 		gm_mat4<T> operator - () const {
 			return gm_mat4<T>(
