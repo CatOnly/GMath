@@ -4,32 +4,33 @@ namespace gm {
 
 	// Data		 ------------------------------
 
+    template <typename T>
+    gm_quaternion<T>::gm_quaternion(gm_vec3<T> axis, const T &theta)
+    {
+        if (fabs(1.0f - axis.dot(axis)) > 0.01f) {
+            axis = axis.normalize();
+        }
+
+        float thetaHalf = float(GM_ANGLES(theta / 2));
+        float sinThetaHalf = gm::sin(thetaHalf);
+
+        x = axis.x * sinThetaHalf;
+        y = axis.y * sinThetaHalf;
+        z = axis.z * sinThetaHalf;
+        w = gm::cos(thetaHalf);
+    }
+    
 	template <typename T>
 	gm_quaternion<T>::gm_quaternion(const T& pitch, const T& yaw, const T& roll)
 	{
 		gm_vec3<T> eulerAngle(pitch * T(0.5), yaw * T(0.5), roll * T(0.5));
-		gm_vec3<T> c = gm::cos(eulerAngle * T(0.5));
-		gm_vec3<T> s = gm::sin(eulerAngle * T(0.5));
-
-		this->w = c.x * c.y * c.z + s.x * s.y * s.z;
-		this->x = s.x * c.y * c.z - c.x * s.y * s.z;
-		this->y = c.x * s.y * c.z + s.x * c.y * s.z;
-		this->z = c.x * c.y * s.z - s.x * s.y * c.z;
-	}
-	template <typename T>
-	gm_quaternion<T>::gm_quaternion(gm_vec3<T> axis, const T &theta)
-	{
-		if (fabs(1.0f - axis.dot(axis)) > 0.01f) {
-			axis = axis.normalize();
-		}
-
-		float thetaHalf = float(GM_ANGLES(theta / 2));
-        float sinThetaHalf = gm::sin(thetaHalf);
-
-		x = axis.x * sinThetaHalf;
-		y = axis.y * sinThetaHalf;
-		z = axis.z * sinThetaHalf;
-        w = gm::cos(thetaHalf);
+		gm_vec3<T> c = gm::cos(eulerAngle);
+		gm_vec3<T> s = gm::sin(eulerAngle);
+        
+		w = c.x * c.y * c.z + s.x * s.y * s.z;
+		x = s.x * c.y * c.z - c.x * s.y * s.z;
+		y = c.x * s.y * c.z + s.x * c.y * s.z;
+		z = c.x * c.y * s.z - s.x * s.y * c.z;
 	}
 
     template <typename T>
@@ -135,27 +136,22 @@ namespace gm {
 	template <typename T>
 	gm_quaternion<T>  gm_quaternion<T>::operator * (const gm_quaternion<T> &q) const {
 		return gm_quaternion<T>(
-			w*q.x + x * q.w + y * q.z - z * q.y,
-			w*q.y + y * q.w + z * q.x - x * q.z,
-			w*q.z + z * q.w + x * q.y - y * q.x,
-			w*q.w - x * q.x - y * q.y - z * q.z
-			);
+			w * q.x + x * q.w + y * q.z - z * q.y,
+			w * q.y + y * q.w + z * q.x - x * q.z,
+			w * q.z + z * q.w + x * q.y - y * q.x,
+			w * q.w - x * q.x - y * q.y - z * q.z
+        );
 	}
 
 	// Operators ------------------------------
 
+    // Ref: https://people.csail.mit.edu/bkph/articles/Quaternions.pdf)
 	template<typename T>
 	gm_vec3<T> operator * (const gm_quaternion<T> &q, const gm_vec3<T> &v)
 	{
-		T two(2);
-		gm_vec3<T> uv, uuv;
-		gm_vec3<T> vq(q.x, q.y, q.z);
-		uv = vq.cross(v);
-		uuv = vq.cross(uv);
-		uv *= (two * q.w);
-		uuv *= two;
-
-		return v + uv + uuv;
+        const gm_vec3<T> qu(q.x, q.y, q.z);
+        const gm_vec3<T> qxv2 = T(2.0) * qu.cross(v);
+        return v + (q.w * qxv2) + qu.cross(qxv2);
 	}
 	template<typename T>
 	gm_vec3<T> operator * (const gm_vec3<T> &v, const gm_quaternion<T> &q)
@@ -209,17 +205,6 @@ namespace gm {
 	}
 
 	template<typename T>
-	gm_quaternion<T> gm_quaternion<T>::cross(const gm_quaternion<T> &q) const 
-	{
-		return gm_quaternion<T>(
-			w * q.w - x * q.x - y * q.y - z * q.z,
-			w * q.x + x * q.w + y * q.z - z * q.y,
-			w * q.y + y * q.w + z * q.x - x * q.z,
-			w * q.z + z * q.w + x * q.y - y * q.x
-			);
-	}
-
-	template<typename T>
 	gm_quaternion<T> gm_quaternion<T>::conjugate() const 
 	{
 		return gm_quaternion<T>(w, -x, -y, -z);
@@ -229,33 +214,6 @@ namespace gm {
 	gm_quaternion<T> gm_quaternion<T>::inverse() const 
 	{
 		return conjugate() / dot(*this);
-	}
-
-	template<typename T>
-	gm_quaternion<T> gm_quaternion<T>::rotate(const gm_vec3<T> v, T angle) const 
-	{
-		gm_vec3<T> Tmp = v;
-
-		// Axis of rotation must be normalised
-		T len = Tmp.length();
-		if (GM_ABS(len - T(1)) > T(gm::EPS))
-		{
-			T oneOverLen = T(1) / len;
-			Tmp.x *= oneOverLen;
-			Tmp.y *= oneOverLen;
-			Tmp.z *= oneOverLen;
-		}
-
-		T AngleRad = GM_RADIANS(angle);
-		T fSin = gm::sin(AngleRad * T(0.5));
-
-		return (*this) * gm_quaternion<T>(gm::cos(AngleRad * T(0.5)), Tmp.x * fSin, Tmp.y * fSin, Tmp.z * fSin);
-	}
-
-	template<typename T>
-	T gm_quaternion<T>::roll() const 
-	{
-		return GM_ANGLES(gm::atan2(T(2) * (x * y + w * z), w * w + x * x - y * y - z * z));
 	}
 
 	template<typename T>
@@ -269,6 +227,12 @@ namespace gm {
 	{
         return GM_ANGLES(gm::asin(T(-2) * (x * z - w * y)));
 	}
+    
+    template<typename T>
+    T gm_quaternion<T>::roll() const
+    {
+        return GM_ANGLES(gm::atan2(T(2) * (x * y + w * z), w * w + x * x - y * y - z * z));
+    }
 
 	template<typename T>
 	gm_quaternion<T> pow(const gm_quaternion<T> &q, float exponent)

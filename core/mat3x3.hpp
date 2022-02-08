@@ -53,10 +53,7 @@ namespace gm {
 		}
 		gm_mat3<T>& unit()
 		{
-			zero();
-			_column[0][0] = 1.0f;
-			_column[1][1] = 1.0f;
-			_column[2][2] = 1.0f;
+            *this = gm_mat3<T>(1.0, 1.0, 1.0);
 
 			return *this;
 		}
@@ -67,10 +64,20 @@ namespace gm {
 
 			return *this;
 		}
-
-		gm_mat3<T>& rotate(const float& x, const float& y) {
-			_column[0] *= x;
-			_column[1] *= y;
+        
+        // Rotate around with axis Z, clockwise, angle start from Y+
+		gm_mat3<T>& rotate(const T angle) {
+            T a = GM_RADIANS(angle);
+            T const c = gm::cos(a);
+            T const s = gm::sin(a);
+            
+            gm_mat3<T> rotate(
+                c, -s, 0,
+                s,  c, 0,
+                0,  0, 1
+            );
+            
+            *this = rotate * (*this);
 
 			return *this;
 		}

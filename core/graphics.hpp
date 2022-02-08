@@ -6,6 +6,29 @@
 
 namespace gm {
 
+    const static gm_vec2<float> ZERO_V2(0.0f, 0.0f);
+    const static gm_vec3<float> ZERO(0.0f, 0.0f, 0.0f);
+    const static gm_vec3<float> AXIS_X(1.0f, 0.0f, 0.0f);
+    const static gm_vec3<float> AXIS_Y(0.0f, 1.0f, 0.0f);
+    const static gm_vec3<float> AXIS_Z(0.0f, 0.0f, 1.0f);
+
+    template <typename T>
+    gm_vec3<T> sin(const gm_vec3<T> v){
+        return gm_vec3<T>(
+            gm::sin(v.x),
+            gm::sin(v.y),
+            gm::sin(v.z)
+        );
+    }
+    template <typename T>
+    gm_vec3<T> cos(const gm_vec3<T> v){
+        return gm_vec3<T>(
+            gm::cos(v.x),
+            gm::cos(v.y),
+            gm::cos(v.z)
+        );
+    }
+
 	template <typename T>
 	gm_vec3<T> reflect(const gm_vec3<T>& I, const gm_vec3<T>& N) {
 		return I - T(2) * N.dot(I) * N;

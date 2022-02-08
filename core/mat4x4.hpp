@@ -60,11 +60,7 @@ namespace gm {
 
         gm_mat4<T>& unit()
         {
-            zero();
-            _column[0][0] = 1.0f;
-            _column[1][1] = 1.0f;
-            _column[2][2] = 1.0f;
-            _column[3][3] = 1.0f;
+            *this = gm_mat4<T>(1.0, 1.0, 1.0, 1.0);
 
             return *this;
         }
@@ -83,16 +79,15 @@ namespace gm {
             return *this;
         }
 
-        /* 
-         * the order of euler-angle is yaw、pitch、roll
-         * 
+        /*
+         * @param angle: rotate angle, around with v3 on v3's vertical plane
+         *
          * nx*nx*(1-c)+c     ny*nx*(1-c)-s*nz  nz*nx*(1-c)+s*ny  0
          * nx*ny*(1-c)+s*nz  ny*ny*(1-c)+c     nz*ny*(1-c)-s*nx  0
          * nx*nz*(1-c)-s*ny  ny*nz*(1-c)+s*nx  nz*nz*(1-c)+c     0
          * 0                 0                 0                 1
-         *
          * see http://docs.gl/gl2/glRotate
-         */ 
+         */
         gm_mat4<T>& rotate(const T angle, const gm_vec3<T> &v3) {
             T a = GM_RADIANS(angle);
             T const c = gm::cos(a);
@@ -113,12 +108,7 @@ namespace gm {
             rotate[2][1] = temp[2] * axis[1] - s * axis[0];
             rotate[2][2] = c + temp[2] * axis[2];
 
-            gm_vec4<T> col0 = _column[0] * rotate[0][0] + _column[1] * rotate[0][1] + _column[2] * rotate[0][2];
-            gm_vec4<T> col1 = _column[0] * rotate[1][0] + _column[1] * rotate[1][1] + _column[2] * rotate[1][2];
-            gm_vec4<T> col2 = _column[0] * rotate[2][0] + _column[1] * rotate[2][1] + _column[2] * rotate[2][2];
-            _column[0] = col0;
-            _column[1] = col1;
-            _column[2] = col2;
+            (*this) = rotate * (*this);
 
             return *this;
         }

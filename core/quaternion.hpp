@@ -47,8 +47,10 @@ namespace gm {
         gm_quaternion(T x, T y, T z, T w) : x(T(x)),y(T(y)),z(T(z)),w(T(w)){}
         gm_quaternion(const gm_quaternion<T> &v):gm_quaternion(v.x, v.y, v.z, v.w){}
 
+        explicit gm_quaternion(gm_vec3<T> axis, const T &theta);
+
+        // Eular Order: ZYX
 		explicit gm_quaternion(const T& pitch, const T& yaw, const T& roll);
-		explicit gm_quaternion(gm_vec3<T> axis, const T &theta);
         explicit gm_quaternion(const gm_mat3<T>& m);
 		explicit gm_quaternion(const gm_mat4<T>& m);
 
@@ -58,16 +60,20 @@ namespace gm {
 		gm_quaternion<T> normalize(const gm_quaternion<T> &q) const;
 
 		T dot(const gm_quaternion<T> &v) const;
-		gm_quaternion<T> cross(const gm_quaternion<T> &v) const;
 
+        // q^*
 		gm_quaternion<T> conjugate() const;
+        // q^-1
 		gm_quaternion<T> inverse() const;
 
-		gm_quaternion<T> rotate(const gm_vec3<T> v, T angle) const;
-
-		T roll() const;
+        // Eular Order: ZYX
 		T pitch() const;
+        
+        // Eular Order: ZYX
 		T yaw() const;
+        
+        // Eular Order: ZYX
+        T roll() const;
 
         gm_mat3<T> mat3() const;
         gm_mat4<T> mat4() const;
@@ -151,6 +157,8 @@ namespace gm {
 		return os;
 	}
 
+    // q.xyz is an unit vector3
+    // q * v = q * v * q^*
     template<typename T>
 	gm_vec3<T> operator * (const gm_quaternion<T> &q, const gm_vec3<T> &v);
 

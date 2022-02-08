@@ -91,8 +91,8 @@ namespace gm {
 	const static float PI_2   = 6.2831853071795864f;
 	const static float PI_1_2 = 1.57079632679f;    // PI * 1/2
 	const static float PI_3_2 = 4.71238898038f;    // PI * 3/2
-	const static float ANGLE_TO_RADIAN = 0.01745329251994f;  // PI / 180.0
-	const static float RADIAN_TO_ANGLE = 57.2957795130823f;  // 180.0 / PI
+	const static float RADIAN_TO_ANGLE = 0.01745329251994f;  // PI / 180.0
+	const static float ANGLE_TO_RADIAN = 57.2957795130823f;  // 180.0 / PI
 
     inline static float sqrt(const float v) {
         return sqrtf(v);
@@ -140,7 +140,7 @@ namespace gm {
 
     inline static float atan2(const float Y, const float X)
     {
-        //return atan2f(Y,X);
+        // return atan2f(Y,X);
         // atan2f occasionally returns NaN with perfectly valid input (possibly due to a compiler or library bug).
         // We are replacing it with a minimax approximation with a max relative error of 7.15255737e-007 compared to the C library function.
         // On PC this has been measured to be 2x faster than the std C version.

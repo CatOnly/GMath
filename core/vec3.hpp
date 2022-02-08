@@ -66,8 +66,8 @@ namespace gm {
     {
     public:
         union { T x, r, s, roll;  };
-        union { T y, g, t, yaw;   };
-        union { T z, b, p, pitch; };
+        union { T y, g, t, pitch; };
+        union { T z, b, p, yaw;   };
 
         gm_vec3(const T x, const T y, const T z):x(static_cast<T>(x)),y(static_cast<T>(y)),z(static_cast<T>(z)){}
         gm_vec3(const gm_vec3<T> &vec):gm_vec3(vec.x, vec.y, vec.z){}
