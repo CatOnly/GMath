@@ -66,13 +66,13 @@ namespace gm {
         // q^-1
 		gm_quaternion<T> inverse() const;
 
-        // Eular Order: ZYX
+        // Eular Order: XYZ, Roll、Pitch、Yaw
 		T pitch() const;
         
-        // Eular Order: ZYX
+        // Eular Order: XYZ, Roll、Pitch、Yaw
 		T yaw() const;
         
-        // Eular Order: ZYX
+        // Eular Order: XYZ, Roll、Pitch、Yaw
         T roll() const;
 
         gm_mat3<T> mat3() const;
